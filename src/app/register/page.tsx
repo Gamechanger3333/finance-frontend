@@ -4,11 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TrendingUp, Eye, EyeOff, Loader2 } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { login } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,8 +30,8 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed");
-      login(data.token, data.user);
-      router.push("/dashboard");
+      // No token is issued at this point — the account must be verified first.
+      router.push(`/verify-email?email=${encodeURIComponent(data.email || email)}`);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -138,6 +136,9 @@ export default function RegisterPage() {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              <p className="text-white/30 text-xs mt-1.5">
+                Must include uppercase, lowercase, a number, and a special character.
+              </p>
             </div>
 
             <button

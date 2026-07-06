@@ -27,7 +27,13 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Login failed");
+      if (!res.ok) {
+        if (res.status === 403 && data.requiresVerification) {
+          router.push(`/verify-email?email=${encodeURIComponent(data.email || email)}`);
+          return;
+        }
+        throw new Error(data.error || "Login failed");
+      }
       login(data.token, data.user);
       router.push("/dashboard");
     } catch (err: any) {
@@ -105,7 +111,7 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label htmlFor="password" className="text-white/70 text-sm">Password</label>
-                <a href="#" className="text-xs text-emerald-400 hover:text-emerald-300">Forgot password?</a>
+                <Link href="/forgot-password" className="text-xs text-emerald-400 hover:text-emerald-300">Forgot password?</Link>
               </div>
               <div className="relative">
                 <input
