@@ -3,6 +3,7 @@ import {
   TrendingUp, BarChart3, Shield, Bot, Target, Zap,
   ArrowRight, Check, ChevronRight, Star,
 } from "lucide-react";
+import LandingAssistant from "@/components/landing/LandingAssistant";
 
 const STATS = [
   { label: "Active Users", value: "50K+" },
@@ -228,6 +229,8 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <LandingAssistant />
     </div>
   );
 }

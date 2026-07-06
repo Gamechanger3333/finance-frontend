@@ -53,6 +53,8 @@ export default function DashboardPage() {
   const budgetPct = totalBudget > 0 ? Math.min(100, (totalSpent / totalBudget) * 100) : 0;
   const monthlyIncome = (dash as any)?.monthlyIncome ?? 0;
   const monthlyExpenses = (dash as any)?.monthlyExpenses ?? 0;
+  const incomeChange = (dash as any)?.incomeChange ?? 0;
+  const expenseChange = (dash as any)?.expenseChange ?? 0;
 
   return (
     <ProtectedLayout>
@@ -82,10 +84,10 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <StatCard label="Monthly Income" value={fmt(monthlyIncome)} icon={TrendingUp} positive change={5.2} />
-              <StatCard label="Monthly Expenses" value={fmt(monthlyExpenses)} icon={TrendingDown} positive={false} change={-2.1} />
-              <StatCard label="Net Savings" value={fmt(monthlyIncome - monthlyExpenses)} icon={DollarSign} positive change={12.4} />
-              <StatCard label="Financial Health" value={`${user?.financialHealthScore ?? 0}/100`} icon={Target} positive change={3.0} />
+              <StatCard label="Monthly Income" value={fmt(monthlyIncome)} icon={TrendingUp} positive={incomeChange >= 0} change={incomeChange} />
+              <StatCard label="Monthly Expenses" value={fmt(monthlyExpenses)} icon={TrendingDown} positive={expenseChange <= 0} change={expenseChange} />
+              <StatCard label="Net Savings" value={fmt(monthlyIncome - monthlyExpenses)} icon={DollarSign} positive={monthlyIncome - monthlyExpenses >= 0} />
+              <StatCard label="Financial Health" value={`${user?.financialHealthScore ?? 0}/100`} icon={Target} positive={(user?.financialHealthScore ?? 0) >= 60} />
             </div>
           )}
 

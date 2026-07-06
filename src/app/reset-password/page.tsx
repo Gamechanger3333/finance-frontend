@@ -31,6 +31,10 @@ function ResetPasswordContent() {
       setError("Passwords do not match");
       return;
     }
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(newPassword)) {
+      setError("Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.");
+      return;
+    }
 
     setLoading(true);
     try {

@@ -24,6 +24,7 @@ export default function AiAssistantPage() {
 
   const send = async (text: string) => {
     if (!text.trim() || sending) return;
+    const history = messages.slice(-8).map((m) => ({ role: m.role, content: m.content }));
     setMessages((m) => [...m, { role: "user", content: text }]);
     setInput("");
     setSending(true);
@@ -32,10 +33,11 @@ export default function AiAssistantPage() {
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, history }),
       });
-      const data = await res.json();
-      setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Request failed");
+      setMessages((m) => [...m, { role: "assistant", content: data.reply ?? "Sorry, I didn't get a response. Please try again." }]);
       if (data.suggestions?.length) setSuggestions(data.suggestions);
     } catch {
       setMessages((m) => [...m, { role: "assistant", content: "Sorry, I had trouble processing your request. Please try again." }]);

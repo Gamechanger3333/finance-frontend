@@ -130,7 +130,7 @@ export default function GoalsPage() {
                       </div>
                       <div className="flex justify-between text-xs mt-1.5">
                         <span className="text-white/30">Target: {fmt(g.targetAmount)}</span>
-                        {g.targetDate && <span className="text-white/30">By {new Date(g.targetDate).toLocaleDateString()}</span>}
+                        {g.deadline && <span className="text-white/30">By {new Date(g.deadline).toLocaleDateString()}</span>}
                       </div>
                     </div>
                     {completed ? (
