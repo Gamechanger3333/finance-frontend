@@ -17,6 +17,7 @@ import {
   X,
   TrendingUp,
   ChevronRight,
+  Repeat,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
@@ -26,6 +27,7 @@ import { apiGet } from "@/lib/api";
 const NAV = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { label: "Transactions", icon: ArrowLeftRight, href: "/transactions" },
+  { label: "Recurring Bills", icon: Repeat, href: "/recurring-bills" },
   { label: "Budgets", icon: PieChart, href: "/budgets" },
   { label: "Goals", icon: Target, href: "/goals" },
   { label: "AI Assistant", icon: Bot, href: "/ai-assistant" },

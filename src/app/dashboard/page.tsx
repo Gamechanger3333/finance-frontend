@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "@/lib/api";
 import {
   TrendingUp, TrendingDown, DollarSign, Target,
-  ArrowUpRight, ArrowDownRight, Wallet, PieChart,
+  ArrowUpRight, ArrowDownRight, Wallet, PieChart, Repeat, AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
@@ -51,6 +51,7 @@ export default function DashboardPage() {
   const totalBudget = budgetSummary.reduce((s: number, b: any) => s + (b.budget ?? b.amount ?? 0), 0);
   const totalSpent = budgetSummary.reduce((s: number, b: any) => s + (b.spent ?? 0), 0);
   const budgetPct = totalBudget > 0 ? Math.min(100, (totalSpent / totalBudget) * 100) : 0;
+  const upcomingBills = (dash as any)?.upcomingBills ?? [];
   const monthlyIncome = (dash as any)?.monthlyIncome ?? 0;
   const monthlyExpenses = (dash as any)?.monthlyExpenses ?? 0;
   const incomeChange = (dash as any)?.incomeChange ?? 0;
@@ -185,6 +186,34 @@ export default function DashboardPage() {
                   );
                 })}
                 {!isLoading && goalsSummary.length === 0 && <p className="text-xs text-white/30 text-center py-2">No goals yet.</p>}
+              </div>
+
+              <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Repeat className="w-4 h-4 text-emerald-400" />
+                    <h3 className="font-semibold text-white text-sm">Upcoming Bills</h3>
+                  </div>
+                  <a href="/recurring-bills" className="text-xs text-emerald-400 hover:text-emerald-300">Manage →</a>
+                </div>
+                {isLoading ? (
+                  <div className="space-y-3">{[...Array(2)].map((_, i) => <div key={i} className="h-10 bg-white/[0.03] rounded animate-pulse" />)}</div>
+                ) : upcomingBills.length === 0 ? (
+                  <p className="text-xs text-white/30 text-center py-2">No bills tracked yet.</p>
+                ) : (
+                  upcomingBills.map((b: any) => (
+                    <div key={b.id} className="flex items-center justify-between py-2 border-b border-white/[0.04] last:border-0">
+                      <div className="min-w-0">
+                        <p className="text-sm text-white/70 truncate">{b.name}</p>
+                        <p className={cn("text-xs flex items-center gap-1", b.daysUntilDue < 0 ? "text-red-400" : b.daysUntilDue <= 3 ? "text-yellow-400" : "text-white/30")}>
+                          {b.daysUntilDue < 0 && <AlertTriangle className="w-3 h-3" />}
+                          {b.daysUntilDue < 0 ? `${Math.abs(b.daysUntilDue)}d overdue` : b.daysUntilDue === 0 ? "Due today" : `Due in ${b.daysUntilDue}d`}
+                        </p>
+                      </div>
+                      <span className="text-sm font-semibold text-white/80 flex-shrink-0 ml-3">{fmt(b.amount)}</span>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
