@@ -17,6 +17,7 @@ interface User {
   userType: string;
   currency: string;
   monthlyIncomeGoal?: number | null;
+  currentBalance?: number | null;
   financialHealthScore?: number | null;
   createdAt: string;
 }

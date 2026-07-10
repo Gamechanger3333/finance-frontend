@@ -15,7 +15,16 @@ export default function TransactionsPage() {
   const qc = useQueryClient();
   const { data: transactions = [], isLoading } = useQuery({ queryKey: ["transactions"], queryFn: () => apiGet("/api/transactions") });
   const { data: categories = [] } = useQuery({ queryKey: ["categories"], queryFn: () => apiGet("/api/categories") });
-  const createTx = useMutation({ mutationFn: (data: any) => apiPost("/api/transactions", data), onSuccess: () => qc.invalidateQueries({ queryKey: ["transactions"] }) });
+  const createTx = useMutation({
+    mutationFn: (data: any) => apiPost("/api/transactions", data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["transactions"] });
+      qc.invalidateQueries({ queryKey: ["goals"] });
+      qc.invalidateQueries({ queryKey: ["savings-rules"] });
+      qc.invalidateQueries({ queryKey: ["savings-activity"] });
+      qc.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+  });
   const deleteTx = useMutation({ mutationFn: (id: number) => apiDelete(`/api/transactions/${id}`), onSuccess: () => qc.invalidateQueries({ queryKey: ["transactions"] }) });
 
   const [showForm, setShowForm] = useState(false);
@@ -36,8 +45,14 @@ export default function TransactionsPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createTx.mutateAsync({ type: form.type, amount: Number(form.amount), description: form.description, categoryId: form.categoryId ? Number(form.categoryId) : 0, date: form.date, notes: form.notes || undefined });
-      showToast("Transaction added!");
+      const result = await createTx.mutateAsync({ type: form.type, amount: Number(form.amount), description: form.description, categoryId: form.categoryId ? Number(form.categoryId) : 0, date: form.date, notes: form.notes || undefined });
+      const applied = (result as any)?.savingsApplied as { ruleName: string; amount: number }[] | undefined;
+      if (applied && applied.length > 0) {
+        const total = applied.reduce((s, a) => s + a.amount, 0);
+        showToast(`Transaction added! +${fmt(total)} auto-saved 🐷`);
+      } else {
+        showToast("Transaction added!");
+      }
       setForm(EMPTY);
       setShowForm(false);
     } catch (err: any) { showToast(err.message); }

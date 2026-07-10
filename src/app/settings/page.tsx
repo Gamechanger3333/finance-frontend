@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiGet, apiPut } from "@/lib/api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiGet, apiPut, apiPatch } from "@/lib/api";
 import { useAuth } from "@/hooks/use-auth";
-import { User, Bell, Shield, TrendingUp, Loader2, CheckCircle2 } from "lucide-react";
+import { User, Bell, Shield, TrendingUp, Loader2, CheckCircle2, CheckCheck, AlertTriangle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 import { useRouter } from "next/navigation";
@@ -14,18 +14,26 @@ const BG = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1400&q=8
 export default function SettingsPage() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const qc = useQueryClient();
   const { data: notifications = [] } = useQuery({ queryKey: ["notifications"], queryFn: () => apiGet("/api/notifications") });
   const updateProfile = useMutation({ mutationFn: (data: any) => apiPut("/api/auth/profile", data) });
+  const markRead = useMutation({ mutationFn: (id: number) => apiPatch(`/api/notifications/${id}/read`, {}), onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }) });
+  const markAllRead = useMutation({ mutationFn: () => apiPatch("/api/notifications/read-all", {}), onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }) });
 
   const [tab, setTab] = useState<"profile" | "notifications" | "security">("profile");
-  const [form, setForm] = useState({ name: user?.name ?? "", currency: user?.currency ?? "USD", monthlyIncomeGoal: String(user?.monthlyIncomeGoal ?? "") });
+  const [form, setForm] = useState({ name: user?.name ?? "", currency: user?.currency ?? "USD", monthlyIncomeGoal: String(user?.monthlyIncomeGoal ?? ""), currentBalance: String(user?.currentBalance ?? "") });
   const [toast, setToast] = useState("");
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(""), 3000); };
 
   const saveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateProfile.mutateAsync({ name: form.name, currency: form.currency, monthlyIncomeGoal: form.monthlyIncomeGoal ? Number(form.monthlyIncomeGoal) : undefined });
+      await updateProfile.mutateAsync({
+        name: form.name,
+        currency: form.currency,
+        monthlyIncomeGoal: form.monthlyIncomeGoal ? Number(form.monthlyIncomeGoal) : undefined,
+        currentBalance: form.currentBalance !== "" ? Number(form.currentBalance) : null,
+      });
       showToast("Profile updated!");
     } catch (err: any) { showToast(err.message); }
   };
@@ -93,6 +101,12 @@ export default function SettingsPage() {
                     <input type="number" value={form.monthlyIncomeGoal} onChange={(e) => setForm((f) => ({ ...f, monthlyIncomeGoal: e.target.value }))}
                       placeholder="e.g. 5000" className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
                   </div>
+                  <div>
+                    <label className="text-white/70 text-sm mb-1.5 block">Current Balance ($)</label>
+                    <input type="number" step="0.01" value={form.currentBalance} onChange={(e) => setForm((f) => ({ ...f, currentBalance: e.target.value }))}
+                      placeholder="e.g. 2500" className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                    <p className="text-xs text-white/30 mt-1">Used as the starting point for your Cash-Flow Forecast. Leave blank to estimate it from your transaction history.</p>
+                  </div>
                   <button type="submit" disabled={updateProfile.isPending}
                     className="h-10 px-6 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white rounded-lg font-medium flex items-center transition-colors">
                     {updateProfile.isPending ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : "Save Changes"}
@@ -140,23 +154,31 @@ export default function SettingsPage() {
 
           {tab === "notifications" && (
             <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-white/[0.06]">
+              <div className="px-5 py-4 border-b border-white/[0.06] flex items-center justify-between">
                 <h2 className="font-semibold text-white">All Notifications</h2>
+                {(notifications as any[]).some((n: any) => !n.isRead) && (
+                  <button onClick={() => markAllRead.mutate()} className="flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300">
+                    <CheckCheck className="w-3.5 h-3.5" /> Mark all read
+                  </button>
+                )}
               </div>
               {(notifications as any[]).length === 0 ? (
                 <div className="py-12 text-center text-white/30 text-sm">No notifications</div>
               ) : (
                 <div className="divide-y divide-white/[0.04]">
                   {(notifications as any[]).map((n: any) => (
-                    <div key={n.id} className={cn("px-5 py-4 flex items-start gap-3", !n.isRead && "bg-emerald-500/[0.03]")}>
-                      <div className={cn("w-2 h-2 rounded-full mt-2 flex-shrink-0", n.isRead ? "bg-white/20" : "bg-emerald-400")} />
+                    <button key={n.id} onClick={() => !n.isRead && markRead.mutate(n.id)}
+                      className={cn("w-full text-left px-5 py-4 flex items-start gap-3 hover:bg-white/[0.02] transition-colors", !n.isRead && "bg-emerald-500/[0.03]")}>
+                      <div className="flex-shrink-0 mt-0.5">
+                        {n.type === "warning" ? <AlertTriangle className="w-4 h-4 text-yellow-400" /> : n.type === "success" ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <Info className="w-4 h-4 text-blue-400" />}
+                      </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-white">{n.title}</p>
                         <p className="text-xs text-white/40 mt-0.5">{n.message}</p>
                         <p className="text-xs text-white/20 mt-1">{new Date(n.createdAt).toLocaleDateString()}</p>
                       </div>
-                      {n.isRead && <CheckCircle2 className="w-4 h-4 text-white/20 flex-shrink-0 mt-0.5" />}
-                    </div>
+                      {!n.isRead && <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 mt-1.5" />}
+                    </button>
                   ))}
                 </div>
               )}

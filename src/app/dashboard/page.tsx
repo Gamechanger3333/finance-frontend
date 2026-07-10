@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "@/lib/api";
 import {
   TrendingUp, TrendingDown, DollarSign, Target,
-  ArrowUpRight, ArrowDownRight, Wallet, PieChart, Repeat, AlertTriangle,
+  ArrowUpRight, ArrowDownRight, Wallet, PieChart, Repeat, AlertTriangle, Activity, CreditCard, PiggyBank,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
@@ -52,6 +52,9 @@ export default function DashboardPage() {
   const totalSpent = budgetSummary.reduce((s: number, b: any) => s + (b.spent ?? 0), 0);
   const budgetPct = totalBudget > 0 ? Math.min(100, (totalSpent / totalBudget) * 100) : 0;
   const upcomingBills = (dash as any)?.upcomingBills ?? [];
+  const cashflowGlance = (dash as any)?.cashflowGlance;
+  const debtSummary = (dash as any)?.debtSummary;
+  const savingsRulesSummary = (dash as any)?.savingsRulesSummary;
   const monthlyIncome = (dash as any)?.monthlyIncome ?? 0;
   const monthlyExpenses = (dash as any)?.monthlyExpenses ?? 0;
   const incomeChange = (dash as any)?.incomeChange ?? 0;
@@ -77,6 +80,20 @@ export default function DashboardPage() {
         </div>
 
         <div className="px-6 pb-8 -mt-2">
+          {!isLoading && cashflowGlance?.overdraftDate && (
+            <a href="/cashflow-forecast" className="mb-6 flex items-start gap-3 bg-red-500/[0.06] border border-red-500/20 rounded-xl p-4 hover:border-red-500/30 transition-colors">
+              <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-white">Projected overdraft risk</p>
+                <p className="text-xs text-white/50 mt-0.5">
+                  Your balance may go negative around{" "}
+                  {new Date(cashflowGlance.overdraftDate).toLocaleDateString(undefined, { month: "long", day: "numeric" })}. Tap to see the full forecast.
+                </p>
+              </div>
+              <Activity className="w-4 h-4 text-white/20 flex-shrink-0 mt-0.5" />
+            </a>
+          )}
+
           {isLoading ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               {[...Array(4)].map((_, i) => (
@@ -215,6 +232,34 @@ export default function DashboardPage() {
                   ))
                 )}
               </div>
+
+              {debtSummary && debtSummary.debtCount > 0 && (
+                <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <CreditCard className="w-4 h-4 text-emerald-400" />
+                      <h3 className="font-semibold text-white text-sm">Debt Payoff</h3>
+                    </div>
+                    <a href="/debts" className="text-xs text-emerald-400 hover:text-emerald-300">Plan →</a>
+                  </div>
+                  <p className="text-xl font-bold text-white">{fmt(debtSummary.totalBalance)}</p>
+                  <p className="text-xs text-white/30 mt-0.5">across {debtSummary.debtCount} active debt{debtSummary.debtCount === 1 ? "" : "s"}</p>
+                </div>
+              )}
+
+              {savingsRulesSummary && savingsRulesSummary.activeRuleCount > 0 && (
+                <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <PiggyBank className="w-4 h-4 text-emerald-400" />
+                      <h3 className="font-semibold text-white text-sm">Auto-Save</h3>
+                    </div>
+                    <a href="/savings-rules" className="text-xs text-emerald-400 hover:text-emerald-300">Manage →</a>
+                  </div>
+                  <p className="text-xl font-bold text-emerald-400">{fmt(savingsRulesSummary.totalSaved)}</p>
+                  <p className="text-xs text-white/30 mt-0.5">via {savingsRulesSummary.activeRuleCount} active rule{savingsRulesSummary.activeRuleCount === 1 ? "" : "s"}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
