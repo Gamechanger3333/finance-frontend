@@ -59,22 +59,22 @@ export default function AiAssistantPage() {
         <div className="relative h-40 overflow-hidden flex-shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
                 <Bot className="w-5 h-5 text-emerald-400" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">AI Financial Advisor</h1>
-                <p className="text-white/50 text-xs mt-0.5">Powered by Llama 3.3 · Groq</p>
+                <h1 className="text-2xl font-bold text-foreground">AI Financial Advisor</h1>
+                <p className="text-foreground/60 text-xs mt-0.5">Powered by Llama 3.3 · Groq</p>
               </div>
             </div>
           </div>
         </div>
 
         <div className="flex-1 px-6 pb-4 -mt-2 grid lg:grid-cols-[1fr_320px] gap-6">
-          <div className="flex flex-col bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
+          <div className="flex flex-col bg-card/70 border border-border rounded-xl overflow-hidden">
             <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[500px]">
               {messages.map((msg, i) => (
                 <div key={i} className={cn("flex gap-3", msg.role === "user" ? "justify-end" : "justify-start")}>
@@ -84,7 +84,7 @@ export default function AiAssistantPage() {
                     </div>
                   )}
                   <div className={cn("max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
-                    msg.role === "user" ? "bg-emerald-500/20 text-white ml-auto rounded-br-sm" : "bg-white/[0.05] text-white/80 rounded-bl-sm")}>
+                    msg.role === "user" ? "bg-emerald-500/20 text-foreground ml-auto rounded-br-sm" : "bg-accent text-foreground/80 rounded-bl-sm")}>
                     {msg.content}
                   </div>
                 </div>
@@ -94,7 +94,7 @@ export default function AiAssistantPage() {
                   <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
                     <Bot className="w-3.5 h-3.5 text-emerald-400" />
                   </div>
-                  <div className="bg-white/[0.05] rounded-2xl rounded-bl-sm px-4 py-3">
+                  <div className="bg-accent rounded-2xl rounded-bl-sm px-4 py-3">
                     <div className="flex gap-1">
                       {[0, 150, 300].map((d) => <div key={d} className="w-2 h-2 rounded-full bg-emerald-400/60 animate-bounce" style={{ animationDelay: `${d}ms` }} />)}
                     </div>
@@ -104,7 +104,7 @@ export default function AiAssistantPage() {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="px-4 py-2 border-t border-white/[0.05]">
+            <div className="px-4 py-2 border-t border-border/70">
               <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
                 {suggestions.slice(0, 4).map((s) => (
                   <button key={s} onClick={() => send(s)}
@@ -115,10 +115,10 @@ export default function AiAssistantPage() {
               </div>
             </div>
 
-            <div className="p-3 border-t border-white/[0.06]">
+            <div className="p-3 border-t border-border">
               <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="flex gap-2">
                 <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask me anything about your finances..."
-                  className="flex-1 h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none"
+                  className="flex-1 h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none"
                   disabled={sending} />
                 <button type="submit" disabled={!input.trim() || sending}
                   className="h-10 px-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white rounded-lg flex items-center justify-center transition-colors">
@@ -129,19 +129,19 @@ export default function AiAssistantPage() {
           </div>
 
           <div className="space-y-4">
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
-              <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
+            <div className="bg-card/70 border border-border rounded-xl overflow-hidden">
+              <div className="px-4 py-3 border-b border-border flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm font-semibold text-white">AI Insights</span>
+                  <span className="text-sm font-semibold text-foreground">AI Insights</span>
                 </div>
-                <button onClick={() => refetch()} className="text-white/30 hover:text-white/60 transition-colors">
+                <button onClick={() => refetch()} className="text-muted-foreground/80 hover:text-foreground/60 transition-colors">
                   <RefreshCw className={cn("w-3.5 h-3.5", loadingInsights && "animate-spin")} />
                 </button>
               </div>
               {loadingInsights ? (
                 <div className="p-4 space-y-3">
-                  {[...Array(3)].map((_, i) => <div key={i} className="h-16 bg-white/[0.03] rounded-lg animate-pulse" />)}
+                  {[...Array(3)].map((_, i) => <div key={i} className="h-16 bg-card/70 rounded-lg animate-pulse" />)}
                 </div>
               ) : (
                 <div className="p-3 space-y-2">
@@ -164,14 +164,14 @@ export default function AiAssistantPage() {
             </div>
 
             {(insights as any)?.recommendations?.length > 0 && (
-              <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4">
+              <div className="bg-card/70 border border-border rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <TrendingUp className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm font-semibold text-white">Top Recommendations</span>
+                  <span className="text-sm font-semibold text-foreground">Top Recommendations</span>
                 </div>
                 <ol className="space-y-2">
                   {((insights as any)?.recommendations ?? []).slice(0, 4).map((r: string, i: number) => (
-                    <li key={i} className="flex gap-2.5 text-xs text-white/60">
+                    <li key={i} className="flex gap-2.5 text-xs text-foreground/60">
                       <span className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">{i + 1}</span>
                       {r}
                     </li>

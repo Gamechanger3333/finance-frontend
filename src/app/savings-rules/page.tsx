@@ -86,11 +86,11 @@ export default function SavingsRulesPage() {
         <div className="relative h-40 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">Automated Savings</h1>
-              <p className="text-white/50 text-sm mt-1">Save on autopilot — no willpower required</p>
+              <h1 className="text-2xl font-bold text-foreground">Automated Savings</h1>
+              <p className="text-foreground/60 text-sm mt-1">Save on autopilot — no willpower required</p>
             </div>
             <button onClick={() => setShowForm(true)} disabled={goalsArr.length === 0}
               className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-white px-4 py-2 rounded-lg text-sm font-medium mt-1 transition-colors">
@@ -101,33 +101,33 @@ export default function SavingsRulesPage() {
 
         <div className="px-6 pb-8 -mt-2 space-y-6">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Total Auto-Saved</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Total Auto-Saved</p>
               <p className="text-xl font-bold text-emerald-400">{fmt(totalSaved)}</p>
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Active Rules</p>
-              <p className="text-xl font-bold text-white">{activeCount}</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Active Rules</p>
+              <p className="text-xl font-bold text-foreground">{activeCount}</p>
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Total Rules</p>
-              <p className="text-xl font-bold text-white">{rulesArr.length}</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Total Rules</p>
+              <p className="text-xl font-bold text-foreground">{rulesArr.length}</p>
             </div>
           </div>
 
           {!isLoading && goalsArr.length === 0 && (
             <div className="bg-yellow-500/[0.06] border border-yellow-500/20 rounded-xl p-4 flex items-center gap-3">
               <Target className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-              <p className="text-sm text-white/60">You need at least one active goal before creating a savings rule. <a href="/goals" className="text-yellow-400 hover:text-yellow-300 underline">Create one →</a></p>
+              <p className="text-sm text-foreground/60">You need at least one active goal before creating a savings rule. <a href="/goals" className="text-yellow-400 hover:text-yellow-300 underline">Create one →</a></p>
             </div>
           )}
 
           {isLoading ? (
-            <div className="grid md:grid-cols-2 gap-4">{[...Array(2)].map((_, i) => <div key={i} className="h-28 bg-white/[0.03] rounded-xl animate-pulse" />)}</div>
+            <div className="grid md:grid-cols-2 gap-4">{[...Array(2)].map((_, i) => <div key={i} className="h-28 bg-card/70 rounded-xl animate-pulse" />)}</div>
           ) : rulesArr.length === 0 ? (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
-              <PiggyBank className="w-10 h-10 text-white/20 mx-auto mb-3" />
-              <p className="text-white/40 text-sm">No savings rules yet. Set one up and start saving without thinking about it.</p>
+            <div className="bg-card/70 border border-border rounded-xl p-12 text-center">
+              <PiggyBank className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
+              <p className="text-muted-foreground text-sm">No savings rules yet. Set one up and start saving without thinking about it.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
@@ -135,30 +135,30 @@ export default function SavingsRulesPage() {
                 const typeInfo = RULE_TYPES.find((t) => t.value === r.type)!;
                 const Icon = typeInfo.icon;
                 return (
-                  <div key={r.id} className={cn("bg-white/[0.04] border rounded-xl p-5 group transition-all",
-                    r.isActive ? "border-white/[0.06] hover:border-emerald-500/20" : "border-white/[0.04] opacity-60")}>
+                  <div key={r.id} className={cn("bg-card border rounded-xl p-5 group transition-all",
+                    r.isActive ? "border-border hover:border-emerald-500/20" : "border-border/60 opacity-60")}>
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
                           <Icon className="w-4 h-4 text-emerald-400" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-white">{r.name}</h3>
-                          <span className="text-xs text-white/30">{typeInfo.label}</span>
+                          <h3 className="font-semibold text-foreground">{r.name}</h3>
+                          <span className="text-xs text-muted-foreground/80">{typeInfo.label}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => updateRule.mutate({ id: r.id, data: { isActive: !r.isActive } })} className="text-white/30 hover:text-emerald-400 transition-colors" title={r.isActive ? "Pause" : "Resume"}>
+                        <button onClick={() => updateRule.mutate({ id: r.id, data: { isActive: !r.isActive } })} className="text-muted-foreground/80 hover:text-emerald-400 transition-colors" title={r.isActive ? "Pause" : "Resume"}>
                           {r.isActive ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                         </button>
-                        <button onClick={() => deleteRule.mutate(r.id)} className="text-white/30 hover:text-red-400 transition-colors">
+                        <button onClick={() => deleteRule.mutate(r.id)} className="text-muted-foreground/80 hover:text-red-400 transition-colors">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
-                    <p className="text-sm text-white/60 mb-3">{ruleSummary(r)}</p>
+                    <p className="text-sm text-foreground/60 mb-3">{ruleSummary(r)}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-white/30">Saved so far</span>
+                      <span className="text-xs text-muted-foreground/80">Saved so far</span>
                       <span className="text-lg font-bold text-emerald-400">{fmt(r.totalSaved)}</span>
                     </div>
                   </div>
@@ -168,22 +168,22 @@ export default function SavingsRulesPage() {
           )}
 
           {/* Activity feed */}
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
+          <div className="bg-card/70 border border-border rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-border flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-400" />
-              <h2 className="font-semibold text-white text-sm">Recent Savings Activity</h2>
+              <h2 className="font-semibold text-foreground text-sm">Recent Savings Activity</h2>
             </div>
             {loadingActivity ? (
-              <div className="p-5 space-y-2">{[...Array(3)].map((_, i) => <div key={i} className="h-8 bg-white/[0.03] rounded animate-pulse" />)}</div>
+              <div className="p-5 space-y-2">{[...Array(3)].map((_, i) => <div key={i} className="h-8 bg-card/70 rounded animate-pulse" />)}</div>
             ) : (activity as any[]).length === 0 ? (
-              <div className="px-5 py-8 text-center text-white/30 text-sm">No contributions yet — they'll show up here as your rules fire.</div>
+              <div className="px-5 py-8 text-center text-muted-foreground/80 text-sm">No contributions yet — they'll show up here as your rules fire.</div>
             ) : (
-              <div className="divide-y divide-white/[0.04]">
+              <div className="divide-y divide-border">
                 {(activity as any[]).map((a: any) => (
                   <div key={a.id} className="px-5 py-3 flex items-center justify-between">
                     <div className="min-w-0">
-                      <p className="text-sm text-white/70 truncate">{a.ruleName} <span className="text-white/30">→ {a.goalName}</span></p>
-                      <p className="text-xs text-white/30">{new Date(a.createdAt).toLocaleDateString()} · {a.note}</p>
+                      <p className="text-sm text-foreground/70 truncate">{a.ruleName} <span className="text-muted-foreground/80">→ {a.goalName}</span></p>
+                      <p className="text-xs text-muted-foreground/80">{new Date(a.createdAt).toLocaleDateString()} · {a.note}</p>
                     </div>
                     <span className="text-sm font-semibold text-emerald-400 flex-shrink-0 ml-3">+{fmt(a.amount)}</span>
                   </div>
@@ -195,80 +195,80 @@ export default function SavingsRulesPage() {
 
         {showForm && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-[#0d1510] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-bold text-white text-lg">New Savings Rule</h2>
-                <button onClick={() => setShowForm(false)} className="text-white/30 hover:text-white"><X className="w-5 h-5" /></button>
+                <h2 className="font-bold text-foreground text-lg">New Savings Rule</h2>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Rule Name</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Rule Name</label>
                   <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="e.g. Spare Change Saver" required
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                 </div>
 
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Type</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Type</label>
                   <div className="grid grid-cols-1 gap-2">
                     {RULE_TYPES.map((t) => (
                       <button key={t.value} type="button" onClick={() => setForm((f) => ({ ...f, type: t.value }))}
                         className={cn("text-left rounded-lg border p-3 transition-colors",
-                          form.type === t.value ? "border-emerald-500/40 bg-emerald-500/[0.06]" : "border-white/10 bg-white/[0.02] hover:border-white/20")}>
+                          form.type === t.value ? "border-emerald-500/40 bg-emerald-500/[0.06]" : "border-border bg-card/50 hover:border-border")}>
                         <div className="flex items-center gap-2 mb-1">
                           <t.icon className="w-4 h-4 text-emerald-400" />
-                          <span className="text-sm font-medium text-white">{t.label}</span>
+                          <span className="text-sm font-medium text-foreground">{t.label}</span>
                         </div>
-                        <p className="text-xs text-white/40">{t.desc}</p>
+                        <p className="text-xs text-muted-foreground">{t.desc}</p>
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Savings Goal</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Savings Goal</label>
                   <select value={form.goalId} onChange={(e) => setForm((f) => ({ ...f, goalId: e.target.value }))} required
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm px-3">
-                    <option value="" className="bg-[#0d1510]">Select a goal</option>
-                    {goalsArr.map((g: any) => <option key={g.id} value={g.id} className="bg-[#0d1510]">{g.name}</option>)}
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground text-sm px-3">
+                    <option value="" className="bg-card">Select a goal</option>
+                    {goalsArr.map((g: any) => <option key={g.id} value={g.id} className="bg-card">{g.name}</option>)}
                   </select>
                 </div>
 
                 {form.type === "round_up" && (
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Round Up To Nearest ($)</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Round Up To Nearest ($)</label>
                     <select value={form.roundUpTo} onChange={(e) => setForm((f) => ({ ...f, roundUpTo: e.target.value }))}
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm px-3">
-                      {["1", "5", "10"].map((v) => <option key={v} value={v} className="bg-[#0d1510]">${v}</option>)}
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground text-sm px-3">
+                      {["1", "5", "10"].map((v) => <option key={v} value={v} className="bg-card">${v}</option>)}
                     </select>
                   </div>
                 )}
 
                 {form.type === "percent_of_income" && (
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Percentage of Income (%)</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Percentage of Income (%)</label>
                     <input type="number" min="1" max="100" step="1" value={form.percentage} onChange={(e) => setForm((f) => ({ ...f, percentage: e.target.value }))} required
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground px-3 text-sm focus:outline-none" />
                   </div>
                 )}
 
                 {form.type === "fixed_recurring" && (
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-white/70 text-sm mb-1.5 block">Amount ($)</label>
+                      <label className="text-foreground/70 text-sm mb-1.5 block">Amount ($)</label>
                       <input type="number" step="0.01" min="0" value={form.fixedAmount} onChange={(e) => setForm((f) => ({ ...f, fixedAmount: e.target.value }))} required
-                        className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                        className="w-full h-10 rounded-lg bg-card border border-border text-foreground px-3 text-sm focus:outline-none" />
                     </div>
                     <div>
-                      <label className="text-white/70 text-sm mb-1.5 block">Frequency</label>
+                      <label className="text-foreground/70 text-sm mb-1.5 block">Frequency</label>
                       <select value={form.frequency} onChange={(e) => setForm((f) => ({ ...f, frequency: e.target.value }))}
-                        className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm px-3 capitalize">
-                        {FREQUENCIES.map((f) => <option key={f} value={f} className="bg-[#0d1510] capitalize">{f}</option>)}
+                        className="w-full h-10 rounded-lg bg-card border border-border text-foreground text-sm px-3 capitalize">
+                        {FREQUENCIES.map((f) => <option key={f} value={f} className="bg-card capitalize">{f}</option>)}
                       </select>
                     </div>
                     <div className="col-span-2">
-                      <label className="text-white/70 text-sm mb-1.5 block">First Run Date</label>
+                      <label className="text-foreground/70 text-sm mb-1.5 block">First Run Date</label>
                       <input type="date" value={form.nextRunDate} onChange={(e) => setForm((f) => ({ ...f, nextRunDate: e.target.value }))} required
-                        className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                        className="w-full h-10 rounded-lg bg-card border border-border text-foreground px-3 text-sm focus:outline-none" />
                     </div>
                   </div>
                 )}

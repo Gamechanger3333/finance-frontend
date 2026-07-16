@@ -46,10 +46,10 @@ export default function AnalyticsPage() {
         <div className="relative h-40 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8">
-            <h1 className="text-2xl font-bold text-white">Analytics</h1>
-            <p className="text-white/50 text-sm mt-1">Deep insights into your financial patterns</p>
+            <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
+            <p className="text-foreground/60 text-sm mt-1">Deep insights into your financial patterns</p>
           </div>
         </div>
 
@@ -61,9 +61,9 @@ export default function AnalyticsPage() {
               { label: "Net Savings", value: fmt(thisMonth.savings), sub: "This month", up: thisMonth.savings >= 0 },
               { label: "Savings Rate", value: `${savingsRate.toFixed(1)}%`, sub: "Of total income", up: savingsRate >= 20 },
             ].map((kpi) => (
-              <div key={kpi.label} className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-                <p className="text-xs text-white/40 mb-2">{kpi.label}</p>
-                <p className="text-xl font-bold text-white">{kpi.value}</p>
+              <div key={kpi.label} className="bg-card border border-border rounded-xl p-4">
+                <p className="text-xs text-muted-foreground mb-2">{kpi.label}</p>
+                <p className="text-xl font-bold text-foreground">{kpi.value}</p>
                 <p className={cn("text-xs mt-1 flex items-center gap-1", kpi.up ? "text-emerald-400" : "text-red-400")}>
                   {kpi.up ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                   {kpi.sub}
@@ -73,10 +73,10 @@ export default function AnalyticsPage() {
           </div>
 
           <div className="grid lg:grid-cols-5 gap-6">
-            <div className="lg:col-span-3 bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+            <div className="lg:col-span-3 bg-card/70 border border-border rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <BarChart3 className="w-4 h-4 text-emerald-400" />
-                <h2 className="font-semibold text-white text-sm">Income vs Expenses (6 months)</h2>
+                <h2 className="font-semibold text-foreground text-sm">Income vs Expenses (6 months)</h2>
               </div>
               <div className="flex items-end gap-3 h-48">
                 {monthlyData.map((m) => (
@@ -87,23 +87,23 @@ export default function AnalyticsPage() {
                       <div className="flex-1 rounded-t-sm bg-red-500/50 hover:bg-red-500/70 transition-colors"
                         style={{ height: `${(m.expense / maxVal) * 100}%`, minHeight: m.expense > 0 ? "2px" : "0" }} />
                     </div>
-                    <span className="text-xs text-white/30">{m.label}</span>
+                    <span className="text-xs text-muted-foreground/80">{m.label}</span>
                   </div>
                 ))}
               </div>
-              <div className="flex items-center gap-4 mt-4 text-xs text-white/40">
+              <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5"><div className="w-3 h-2 rounded-sm bg-emerald-500/70" />Income</div>
                 <div className="flex items-center gap-1.5"><div className="w-3 h-2 rounded-sm bg-red-500/50" />Expenses</div>
               </div>
             </div>
 
-            <div className="lg:col-span-2 bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+            <div className="lg:col-span-2 bg-card/70 border border-border rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <PieChart className="w-4 h-4 text-emerald-400" />
-                <h2 className="font-semibold text-white text-sm">Spending by Category</h2>
+                <h2 className="font-semibold text-foreground text-sm">Spending by Category</h2>
               </div>
               {catData.length === 0 ? (
-                <div className="h-40 flex items-center justify-center text-white/30 text-sm">No expense data yet</div>
+                <div className="h-40 flex items-center justify-center text-muted-foreground/80 text-sm">No expense data yet</div>
               ) : (
                 <div className="space-y-2.5">
                   {catData.map(([cat, amount], idx) => {
@@ -113,14 +113,14 @@ export default function AnalyticsPage() {
                         <div className="flex justify-between text-xs mb-1">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                            <span className="text-white/60 truncate max-w-[100px]">{cat}</span>
+                            <span className="text-foreground/60 truncate max-w-[100px]">{cat}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-white/40">{pct.toFixed(1)}%</span>
-                            <span className="text-white/60 font-medium">{fmt(amount)}</span>
+                            <span className="text-muted-foreground">{pct.toFixed(1)}%</span>
+                            <span className="text-foreground/60 font-medium">{fmt(amount)}</span>
                           </div>
                         </div>
-                        <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-accent rounded-full overflow-hidden">
                           <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: COLORS[idx % COLORS.length] }} />
                         </div>
                       </div>
@@ -131,10 +131,10 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+          <div className="bg-card/70 border border-border rounded-xl p-5">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="w-4 h-4 text-emerald-400" />
-              <h2 className="font-semibold text-white text-sm">Savings Trend</h2>
+              <h2 className="font-semibold text-foreground text-sm">Savings Trend</h2>
             </div>
             <div className="flex items-end gap-3 h-32">
               {monthlyData.map((m) => {
@@ -147,7 +147,7 @@ export default function AnalyticsPage() {
                         style={{ height: `${pct}%`, minHeight: "2px" }} />
                     </div>
                     <div className="text-center">
-                      <span className="text-xs text-white/30 block">{m.label}</span>
+                      <span className="text-xs text-muted-foreground/80 block">{m.label}</span>
                       <span className={cn("text-[10px] font-medium", m.savings >= 0 ? "text-emerald-400" : "text-red-400")}>{fmt(m.savings)}</span>
                     </div>
                   </div>

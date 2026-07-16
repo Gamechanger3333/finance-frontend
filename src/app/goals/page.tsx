@@ -59,11 +59,11 @@ export default function GoalsPage() {
         <div className="relative h-40 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">Financial Goals</h1>
-              <p className="text-white/50 text-sm mt-1">Track your savings targets and milestones</p>
+              <h1 className="text-2xl font-bold text-foreground">Financial Goals</h1>
+              <p className="text-foreground/60 text-sm mt-1">Track your savings targets and milestones</p>
             </div>
             <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg text-sm font-medium mt-1 transition-colors">
               <Plus className="w-4 h-4" /> New Goal
@@ -73,28 +73,28 @@ export default function GoalsPage() {
 
         <div className="px-6 pb-8 -mt-2">
           <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Total Target</p>
-              <p className="text-lg font-bold text-white">{fmt(totalTarget)}</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Total Target</p>
+              <p className="text-lg font-bold text-foreground">{fmt(totalTarget)}</p>
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Total Saved</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Total Saved</p>
               <p className="text-lg font-bold text-emerald-400">{fmt(totalSaved)}</p>
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Overall Progress</p>
-              <p className="text-lg font-bold text-white">{overallPct.toFixed(0)}%</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Overall Progress</p>
+              <p className="text-lg font-bold text-foreground">{overallPct.toFixed(0)}%</p>
             </div>
           </div>
 
           {isLoading ? (
             <div className="grid md:grid-cols-2 gap-4">
-              {[...Array(4)].map((_, i) => <div key={i} className="h-48 bg-white/[0.03] rounded-xl animate-pulse" />)}
+              {[...Array(4)].map((_, i) => <div key={i} className="h-48 bg-card/70 rounded-xl animate-pulse" />)}
             </div>
           ) : (goals as any[]).length === 0 ? (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
-              <Target className="w-10 h-10 text-white/20 mx-auto mb-3" />
-              <p className="text-white/40 text-sm">No goals yet. Create your first financial goal to start saving with purpose.</p>
+            <div className="bg-card/70 border border-border rounded-xl p-12 text-center">
+              <Target className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
+              <p className="text-muted-foreground text-sm">No goals yet. Create your first financial goal to start saving with purpose.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
@@ -102,35 +102,35 @@ export default function GoalsPage() {
                 const pct = g.targetAmount > 0 ? Math.min(100, (g.currentAmount / g.targetAmount) * 100) : 0;
                 const completed = pct >= 100;
                 return (
-                  <div key={g.id} className={cn("border rounded-xl p-5 group transition-all", completed ? "bg-emerald-500/5 border-emerald-500/20" : "bg-white/[0.04] border-white/[0.06] hover:border-emerald-500/20")}>
+                  <div key={g.id} className={cn("border rounded-xl p-5 group transition-all", completed ? "bg-emerald-500/5 border-emerald-500/20" : "bg-card border-border hover:border-emerald-500/20")}>
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{GOAL_EMOJIS[g.type] || "🎯"}</span>
                         <div>
-                          <h3 className="font-semibold text-white">{g.name}</h3>
-                          <span className="text-xs text-white/30 capitalize">{g.type.replace("_", " ")}</span>
+                          <h3 className="font-semibold text-foreground">{g.name}</h3>
+                          <span className="text-xs text-muted-foreground/80 capitalize">{g.type.replace("_", " ")}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => { setAddFundsId(g.id); setAddAmount(""); }} className="text-white/30 hover:text-emerald-400 transition-colors">
+                        <button onClick={() => { setAddFundsId(g.id); setAddAmount(""); }} className="text-muted-foreground/80 hover:text-emerald-400 transition-colors">
                           <PlusCircle className="w-4 h-4" />
                         </button>
-                        <button onClick={() => deleteGoal.mutate(g.id)} className="text-white/30 hover:text-red-400 transition-colors">
+                        <button onClick={() => deleteGoal.mutate(g.id)} className="text-muted-foreground/80 hover:text-red-400 transition-colors">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
                     <div className="mb-4">
                       <div className="flex justify-between text-xs mb-2">
-                        <span className="text-white/40">{fmt(g.currentAmount)} saved</span>
-                        <span className={cn("font-semibold", completed ? "text-emerald-400" : "text-white/60")}>{pct.toFixed(0)}%</span>
+                        <span className="text-muted-foreground">{fmt(g.currentAmount)} saved</span>
+                        <span className={cn("font-semibold", completed ? "text-emerald-400" : "text-foreground/60")}>{pct.toFixed(0)}%</span>
                       </div>
-                      <div className="h-2.5 bg-white/[0.06] rounded-full overflow-hidden">
+                      <div className="h-2.5 bg-accent rounded-full overflow-hidden">
                         <div className={cn("h-full rounded-full transition-all duration-700", completed ? "bg-emerald-400" : "bg-emerald-500")} style={{ width: `${pct}%` }} />
                       </div>
                       <div className="flex justify-between text-xs mt-1.5">
-                        <span className="text-white/30">Target: {fmt(g.targetAmount)}</span>
-                        {g.deadline && <span className="text-white/30">By {new Date(g.deadline).toLocaleDateString()}</span>}
+                        <span className="text-muted-foreground/80">Target: {fmt(g.targetAmount)}</span>
+                        {g.deadline && <span className="text-muted-foreground/80">By {new Date(g.deadline).toLocaleDateString()}</span>}
                       </div>
                     </div>
                     {completed ? (
@@ -138,15 +138,15 @@ export default function GoalsPage() {
                         🎉 Goal achieved! Congratulations!
                       </div>
                     ) : (
-                      <p className="text-xs text-white/30">{fmt(g.targetAmount - g.currentAmount)} remaining to reach your goal</p>
+                      <p className="text-xs text-muted-foreground/80">{fmt(g.targetAmount - g.currentAmount)} remaining to reach your goal</p>
                     )}
                     {addFundsId === g.id && (
                       <div className="mt-3 flex gap-2">
                         <input type="number" step="0.01" min="0" value={addAmount} onChange={(e) => setAddAmount(e.target.value)}
-                          placeholder="Amount to add" className="flex-1 h-9 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                          placeholder="Amount to add" className="flex-1 h-9 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                         <button onClick={() => handleAddFunds(g)} disabled={updateGoal.isPending}
                           className="h-9 px-3 bg-emerald-500 hover:bg-emerald-400 text-white rounded-lg text-sm font-medium">Add</button>
-                        <button onClick={() => setAddFundsId(null)} className="h-9 px-3 text-white/40 hover:text-white text-sm">Cancel</button>
+                        <button onClick={() => setAddFundsId(null)} className="h-9 px-3 text-muted-foreground hover:text-foreground text-sm">Cancel</button>
                       </div>
                     )}
                   </div>
@@ -158,40 +158,40 @@ export default function GoalsPage() {
 
         {showForm && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-[#0d1510] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-bold text-white text-lg">Create Financial Goal</h2>
-                <button onClick={() => setShowForm(false)} className="text-white/30 hover:text-white"><X className="w-5 h-5" /></button>
+                <h2 className="font-bold text-foreground text-lg">Create Financial Goal</h2>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Goal Name</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Goal Name</label>
                   <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="e.g. Emergency Fund" required
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                 </div>
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Goal Type</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Goal Type</label>
                   <select value={form.type} onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm px-3">
-                    {GOAL_TYPES.map((t) => <option key={t} value={t} className="bg-[#0d1510] capitalize">{GOAL_EMOJIS[t]} {t.replace("_", " ")}</option>)}
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground text-sm px-3">
+                    {GOAL_TYPES.map((t) => <option key={t} value={t} className="bg-card capitalize">{GOAL_EMOJIS[t]} {t.replace("_", " ")}</option>)}
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Target Amount ($)</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Target Amount ($)</label>
                     <input type="number" step="0.01" min="0" value={form.targetAmount} onChange={(e) => setForm((f) => ({ ...f, targetAmount: e.target.value }))} placeholder="0.00" required
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                   </div>
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Already Saved ($)</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Already Saved ($)</label>
                     <input type="number" step="0.01" min="0" value={form.currentAmount} onChange={(e) => setForm((f) => ({ ...f, currentAmount: e.target.value }))} placeholder="0.00"
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                   </div>
                 </div>
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Target Date (optional)</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Target Date (optional)</label>
                   <input type="date" value={form.targetDate} onChange={(e) => setForm((f) => ({ ...f, targetDate: e.target.value }))}
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground px-3 text-sm focus:outline-none" />
                 </div>
                 <button type="submit" disabled={createGoal.isPending}
                   className="w-full h-10 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white rounded-lg font-medium flex items-center justify-center transition-colors">

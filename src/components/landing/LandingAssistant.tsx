@@ -117,7 +117,7 @@ export default function LandingAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             onClick={() => openChat(hint)}
-            className="max-w-[240px] text-left bg-[#0d1510] border border-emerald-500/30 rounded-2xl rounded-br-sm px-4 py-3 text-sm text-white/80 shadow-2xl hover:border-emerald-500/50 transition-colors"
+            className="max-w-[240px] text-left bg-card border border-emerald-500/30 rounded-2xl rounded-br-sm px-4 py-3 text-sm text-foreground/80 shadow-2xl hover:border-emerald-500/50 transition-colors"
           >
             <span className="flex items-center gap-1.5 text-emerald-400 text-xs font-semibold mb-1">
               <Sparkles className="w-3 h-3" /> FinFlow Assistant
@@ -135,17 +135,17 @@ export default function LandingAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.97 }}
             transition={{ duration: 0.18 }}
-            className="w-[340px] sm:w-[380px] h-[480px] flex flex-col bg-[#0a0f0d] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            className="w-[340px] sm:w-[380px] h-[480px] flex flex-col bg-background border border-border rounded-2xl shadow-2xl overflow-hidden"
           >
-            <div className="flex items-center gap-3 px-4 h-14 border-b border-white/[0.06] flex-shrink-0">
+            <div className="flex items-center gap-3 px-4 h-14 border-b border-border flex-shrink-0">
               <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
                 <Bot className="w-4 h-4 text-emerald-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-white leading-tight">FinFlow Assistant</p>
-                <p className="text-[11px] text-white/40 leading-tight">Ask about features or pricing</p>
+                <p className="text-sm font-semibold text-foreground leading-tight">FinFlow Assistant</p>
+                <p className="text-[11px] text-muted-foreground leading-tight">Ask about features or pricing</p>
               </div>
-              <button onClick={() => setOpen(false)} className="text-white/30 hover:text-white transition-colors">
+              <button onClick={() => setOpen(false)} className="text-muted-foreground/80 hover:text-foreground transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -161,7 +161,7 @@ export default function LandingAssistant() {
                   <div
                     className={cn(
                       "max-w-[80%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed",
-                      msg.role === "user" ? "bg-emerald-500/20 text-white rounded-br-sm" : "bg-white/[0.05] text-white/80 rounded-bl-sm"
+                      msg.role === "user" ? "bg-emerald-500/20 text-foreground rounded-br-sm" : "bg-accent text-foreground/80 rounded-bl-sm"
                     )}
                   >
                     {msg.content}
@@ -173,7 +173,7 @@ export default function LandingAssistant() {
                   <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
                     <Bot className="w-3 h-3 text-emerald-400" />
                   </div>
-                  <div className="bg-white/[0.05] rounded-2xl rounded-bl-sm px-3.5 py-2.5">
+                  <div className="bg-accent rounded-2xl rounded-bl-sm px-3.5 py-2.5">
                     <div className="flex gap-1">
                       {[0, 150, 300].map((d) => (
                         <div key={d} className="w-1.5 h-1.5 rounded-full bg-emerald-400/60 animate-bounce" style={{ animationDelay: `${d}ms` }} />
@@ -185,7 +185,7 @@ export default function LandingAssistant() {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="px-3 py-2 border-t border-white/[0.05] flex-shrink-0">
+            <div className="px-3 py-2 border-t border-border/70 flex-shrink-0">
               <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
                 {suggestions.slice(0, 4).map((s) => (
                   <button
@@ -205,14 +205,14 @@ export default function LandingAssistant() {
                 e.preventDefault();
                 send(input);
               }}
-              className="p-3 border-t border-white/[0.06] flex gap-2 flex-shrink-0"
+              className="p-3 border-t border-border flex gap-2 flex-shrink-0"
             >
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask a question..."
                 disabled={sending}
-                className="flex-1 h-9 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none"
+                className="flex-1 h-9 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none"
               />
               <button
                 type="submit"
@@ -244,7 +244,7 @@ export default function LandingAssistant() {
           )}
         </AnimatePresence>
         {!open && hint && (
-          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-[#060a08]" />
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-background" />
         )}
       </motion.button>
     </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TrendingUp, Loader2, KeyRound, ArrowLeft } from "lucide-react";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -33,13 +34,14 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060a08] flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-6 py-12">
+      <ThemeToggle className="fixed top-4 right-4 z-50" />
       <div className="w-full max-w-md">
         <div className="flex items-center gap-2 mb-8 justify-center">
           <div className="w-7 h-7 rounded-md bg-emerald-500 flex items-center justify-center">
             <TrendingUp className="w-3.5 h-3.5 text-white" />
           </div>
-          <span className="text-base font-bold text-white">FinFlow</span>
+          <span className="text-base font-bold text-foreground">FinFlow</span>
         </div>
 
         {sent ? (
@@ -47,9 +49,9 @@ export default function ForgotPasswordPage() {
             <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
               <KeyRound className="w-6 h-6 text-emerald-400" />
             </div>
-            <h1 className="text-xl font-bold text-white mb-2">Check your email</h1>
-            <p className="text-white/40 text-sm mb-8">
-              If an account exists for <span className="text-white/70">{email}</span>, we&apos;ve sent a password reset code and link. It expires in 15 minutes.
+            <h1 className="text-xl font-bold text-foreground mb-2">Check your email</h1>
+            <p className="text-muted-foreground text-sm mb-8">
+              If an account exists for <span className="text-foreground/70">{email}</span>, we&apos;ve sent a password reset code and link. It expires in 15 minutes.
             </p>
             <Link
               href={`/reset-password?email=${encodeURIComponent(email)}`}
@@ -64,8 +66,8 @@ export default function ForgotPasswordPage() {
               <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
                 <KeyRound className="w-6 h-6 text-emerald-400" />
               </div>
-              <h1 className="text-2xl font-bold text-white mb-2">Forgot password?</h1>
-              <p className="text-white/40 text-sm">No worries, we&apos;ll send you a reset code.</p>
+              <h1 className="text-2xl font-bold text-foreground mb-2">Forgot password?</h1>
+              <p className="text-muted-foreground text-sm">No worries, we&apos;ll send you a reset code.</p>
             </div>
 
             {error && (
@@ -76,7 +78,7 @@ export default function ForgotPasswordPage() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="email" className="text-white/70 text-sm mb-1.5 block">Email</label>
+                <label htmlFor="email" className="text-foreground/70 text-sm mb-1.5 block">Email</label>
                 <input
                   id="email"
                   type="email"
@@ -84,7 +86,7 @@ export default function ForgotPasswordPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="w-full h-11 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:outline-none px-3 text-sm"
+                  className="w-full h-11 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 focus:border-emerald-500/50 focus:outline-none px-3 text-sm"
                 />
               </div>
 
@@ -105,7 +107,7 @@ export default function ForgotPasswordPage() {
 
         <button
           onClick={() => router.push("/login")}
-          className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white/60 mt-8 mx-auto"
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground/60 mt-8 mx-auto"
         >
           <ArrowLeft className="w-4 h-4" /> Back to login
         </button>

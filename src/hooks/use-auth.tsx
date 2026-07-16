@@ -81,6 +81,7 @@ export function useAuth() {
 
 // Token helpers
 const TOKEN_KEY = "finflow_token";
+const TOKEN_COOKIE = "finflow_token";
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -89,8 +90,17 @@ export function getToken(): string | null {
 
 export function saveToken(token: string): void {
   localStorage.setItem(TOKEN_KEY, token);
+  // Mirrored into a cookie (readable, not httpOnly — same trust level as
+  // localStorage) purely so the Next.js middleware can do a fast, server-side
+  // "is anyone logged in" check before the page ever renders. The real
+  // authorization check still happens on every API request via the JWT
+  // that the backend verifies (see requireAuth middleware).
+  document.cookie = `${TOKEN_COOKIE}=${token}; path=/; max-age=${
+    60 * 60 * 24 * 7
+  }; samesite=lax`;
 }
 
 export function clearToken(): void {
   localStorage.removeItem(TOKEN_KEY);
+  document.cookie = `${TOKEN_COOKIE}=; path=/; max-age=0; samesite=lax`;
 }

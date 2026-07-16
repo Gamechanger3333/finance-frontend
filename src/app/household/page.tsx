@@ -83,7 +83,7 @@ export default function HouseholdPage() {
   if (isLoading) {
     return (
       <ProtectedLayout>
-        <div className="p-6"><div className="h-40 bg-white/[0.03] rounded-xl animate-pulse" /></div>
+        <div className="p-6"><div className="h-40 bg-card/70 rounded-xl animate-pulse" /></div>
       </ProtectedLayout>
     );
   }
@@ -96,11 +96,11 @@ export default function HouseholdPage() {
         <div className="relative h-40 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">Household</h1>
-              <p className="text-white/50 text-sm mt-1">Split shared expenses with people you live with</p>
+              <h1 className="text-2xl font-bold text-foreground">Household</h1>
+              <p className="text-foreground/60 text-sm mt-1">Split shared expenses with people you live with</p>
             </div>
             {household && (
               <button onClick={() => setShowExpenseForm(true)} className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg text-sm font-medium mt-1 transition-colors">
@@ -112,11 +112,11 @@ export default function HouseholdPage() {
 
         <div className="px-6 pb-8 -mt-2 space-y-6">
           {!household ? (
-            <div className="max-w-md bg-white/[0.03] border border-white/[0.06] rounded-xl p-6">
-              <div className="flex gap-1 bg-white/[0.04] border border-white/[0.08] rounded-lg p-1 mb-5 w-fit">
+            <div className="max-w-md bg-card/70 border border-border rounded-xl p-6">
+              <div className="flex gap-1 bg-card border border-border rounded-lg p-1 mb-5 w-fit">
                 {(["create", "join"] as const).map((m) => (
                   <button key={m} onClick={() => setMode(m)}
-                    className={cn("px-3 py-1.5 rounded-md text-xs font-medium capitalize transition-colors", mode === m ? "bg-emerald-500 text-white" : "text-white/50 hover:text-white")}>
+                    className={cn("px-3 py-1.5 rounded-md text-xs font-medium capitalize transition-colors", mode === m ? "bg-emerald-500 text-white" : "text-foreground/60 hover:text-foreground")}>
                     {m} household
                   </button>
                 ))}
@@ -124,15 +124,15 @@ export default function HouseholdPage() {
               <form onSubmit={submitSetup} className="space-y-4">
                 {mode === "create" ? (
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Household Name</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Household Name</label>
                     <input value={nameInput} onChange={(e) => setNameInput(e.target.value)} placeholder="e.g. The Smiths" required
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                   </div>
                 ) : (
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Invite Code</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Invite Code</label>
                     <input value={codeInput} onChange={(e) => setCodeInput(e.target.value.toUpperCase())} placeholder="e.g. A1B2C3D4" required
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none uppercase" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none uppercase" />
                   </div>
                 )}
                 <button type="submit" disabled={createHousehold.isPending || joinHousehold.isPending}
@@ -144,70 +144,70 @@ export default function HouseholdPage() {
           ) : (
             <>
               <div className="grid md:grid-cols-3 gap-4">
-                <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-                  <p className="text-xs text-white/40 mb-1">Owed to You</p>
+                <div className="bg-card border border-border rounded-xl p-4">
+                  <p className="text-xs text-muted-foreground mb-1">Owed to You</p>
                   <p className="text-xl font-bold text-emerald-400">{fmt(balances?.owedToMe ?? 0)}</p>
                 </div>
-                <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-                  <p className="text-xs text-white/40 mb-1">You Owe</p>
+                <div className="bg-card border border-border rounded-xl p-4">
+                  <p className="text-xs text-muted-foreground mb-1">You Owe</p>
                   <p className="text-xl font-bold text-red-400">{fmt(balances?.iOwe ?? 0)}</p>
                 </div>
-                <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4 flex items-center justify-between">
+                <div className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-white/40 mb-1">Invite Code</p>
-                    <p className="text-sm font-mono text-white">{household.inviteCode}</p>
+                    <p className="text-xs text-muted-foreground mb-1">Invite Code</p>
+                    <p className="text-sm font-mono text-foreground">{household.inviteCode}</p>
                   </div>
-                  <button onClick={copyCode} className="text-white/40 hover:text-emerald-400 transition-colors">
+                  <button onClick={copyCode} className="text-muted-foreground hover:text-emerald-400 transition-colors">
                     {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+              <div className="bg-card/70 border border-border rounded-xl p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-emerald-400" />
-                    <h2 className="font-semibold text-white text-sm">{household.name} · {household.members.length} member{household.members.length === 1 ? "" : "s"}</h2>
+                    <h2 className="font-semibold text-foreground text-sm">{household.name} · {household.members.length} member{household.members.length === 1 ? "" : "s"}</h2>
                   </div>
-                  <button onClick={() => leaveHousehold.mutate()} className="flex items-center gap-1 text-xs text-white/40 hover:text-red-400 transition-colors">
+                  <button onClick={() => leaveHousehold.mutate()} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-red-400 transition-colors">
                     <LogOut className="w-3.5 h-3.5" /> Leave
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {household.members.map((m: any) => (
-                    <div key={m.userId} className="flex items-center gap-2 bg-white/[0.04] rounded-lg px-3 py-1.5">
+                    <div key={m.userId} className="flex items-center gap-2 bg-card rounded-lg px-3 py-1.5">
                       <div className="w-6 h-6 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[10px] font-bold">
                         {m.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase()}
                       </div>
-                      <span className="text-sm text-white/70">{m.name}{m.userId === user?.id ? " (you)" : ""}</span>
+                      <span className="text-sm text-foreground/70">{m.name}{m.userId === user?.id ? " (you)" : ""}</span>
                       {m.role === "owner" && <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full">Owner</span>}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
-                <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
+              <div className="bg-card/70 border border-border rounded-xl overflow-hidden">
+                <div className="px-5 py-4 border-b border-border flex items-center gap-2">
                   <Receipt className="w-4 h-4 text-emerald-400" />
-                  <h2 className="font-semibold text-white text-sm">Shared Expenses</h2>
+                  <h2 className="font-semibold text-foreground text-sm">Shared Expenses</h2>
                 </div>
                 {(expenses as any[]).length === 0 ? (
-                  <div className="px-5 py-8 text-center text-white/30 text-sm">No shared expenses yet.</div>
+                  <div className="px-5 py-8 text-center text-muted-foreground/80 text-sm">No shared expenses yet.</div>
                 ) : (
-                  <div className="divide-y divide-white/[0.04]">
+                  <div className="divide-y divide-border">
                     {(expenses as any[]).map((e: any) => (
                       <div key={e.id} className="px-5 py-4">
                         <div className="flex items-center justify-between mb-2">
                           <div>
-                            <p className="text-sm font-medium text-white">{e.description}</p>
-                            <p className="text-xs text-white/30">{e.date} · Paid by {e.paidByUserId === user?.id ? "you" : e.paidByName}</p>
+                            <p className="text-sm font-medium text-foreground">{e.description}</p>
+                            <p className="text-xs text-muted-foreground/80">{e.date} · Paid by {e.paidByUserId === user?.id ? "you" : e.paidByName}</p>
                           </div>
-                          <span className="text-sm font-semibold text-white">{fmt(e.amount)}</span>
+                          <span className="text-sm font-semibold text-foreground">{fmt(e.amount)}</span>
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {e.splits.map((s: any) => (
                             <span key={s.id} className={cn("text-xs px-2 py-1 rounded-full flex items-center gap-1",
-                              s.isSettled ? "bg-white/[0.03] text-white/30" : "bg-yellow-500/10 text-yellow-400/80")}>
+                              s.isSettled ? "bg-card/70 text-muted-foreground/80" : "bg-yellow-500/10 text-yellow-400/80")}>
                               {s.userName === user?.name ? "You" : s.userName} owes {fmt(s.amountOwed)}
                               {!s.isSettled && s.userId === user?.id && (
                                 <button onClick={() => settleSplit.mutate({ expenseId: e.id, splitId: s.id })} className="ml-1 underline hover:text-yellow-300">settle</button>
@@ -227,35 +227,35 @@ export default function HouseholdPage() {
 
         {showExpenseForm && household && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-[#0d1510] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-bold text-white text-lg">Add Shared Expense</h2>
-                <button onClick={() => setShowExpenseForm(false)} className="text-white/30 hover:text-white"><X className="w-5 h-5" /></button>
+                <h2 className="font-bold text-foreground text-lg">Add Shared Expense</h2>
+                <button onClick={() => setShowExpenseForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submitExpense} className="space-y-4">
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Description</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Description</label>
                   <input value={expForm.description} onChange={(e) => setExpForm((f) => ({ ...f, description: e.target.value }))} placeholder="e.g. Groceries" required
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Amount ($)</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Amount ($)</label>
                     <input type="number" step="0.01" min="0" value={expForm.amount} onChange={(e) => setExpForm((f) => ({ ...f, amount: e.target.value }))} required
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground px-3 text-sm focus:outline-none" />
                   </div>
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Date</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Date</label>
                     <input type="date" value={expForm.date} onChange={(e) => setExpForm((f) => ({ ...f, date: e.target.value }))} required
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground px-3 text-sm focus:outline-none" />
                   </div>
                 </div>
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Split</label>
-                  <div className="flex gap-1 bg-white/[0.04] border border-white/[0.08] rounded-lg p-1 w-fit mb-3">
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Split</label>
+                  <div className="flex gap-1 bg-card border border-border rounded-lg p-1 w-fit mb-3">
                     {(["equal", "custom"] as const).map((s) => (
                       <button key={s} type="button" onClick={() => setSplitMethod(s)}
-                        className={cn("px-3 py-1.5 rounded-md text-xs font-medium capitalize transition-colors", splitMethod === s ? "bg-emerald-500 text-white" : "text-white/50 hover:text-white")}>
+                        className={cn("px-3 py-1.5 rounded-md text-xs font-medium capitalize transition-colors", splitMethod === s ? "bg-emerald-500 text-white" : "text-foreground/60 hover:text-foreground")}>
                         {s}
                       </button>
                     ))}
@@ -264,12 +264,12 @@ export default function HouseholdPage() {
                     <div className="space-y-2">
                       {household.members.map((m: any) => (
                         <div key={m.userId} className="flex items-center justify-between gap-3">
-                          <span className="text-sm text-white/60">{m.name}</span>
+                          <span className="text-sm text-foreground/60">{m.name}</span>
                           <input type="number" step="0.01" min="0" value={customAmounts[m.userId] ?? ""} onChange={(e) => setCustomAmounts((c) => ({ ...c, [m.userId]: e.target.value }))}
-                            placeholder="0.00" className="w-28 h-9 rounded-lg bg-white/[0.04] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                            placeholder="0.00" className="w-28 h-9 rounded-lg bg-card border border-border text-foreground px-3 text-sm focus:outline-none" />
                         </div>
                       ))}
-                      <p className="text-xs text-white/30">Amounts must add up to the total.</p>
+                      <p className="text-xs text-muted-foreground/80">Amounts must add up to the total.</p>
                     </div>
                   )}
                 </div>

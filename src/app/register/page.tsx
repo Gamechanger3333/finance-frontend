@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TrendingUp, Eye, EyeOff, Loader2 } from "lucide-react";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -47,11 +48,12 @@ export default function RegisterPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#060a08] flex">
+    <div className="min-h-screen bg-background flex">
+      <ThemeToggle className="fixed top-4 right-4 z-50" />
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=900&q=80" alt="Finance" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 to-[#060a08]/90" />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 to-black/90" />
         <div className="relative z-10 flex flex-col justify-between p-12 w-full">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
@@ -78,11 +80,11 @@ export default function RegisterPage() {
             <div className="w-7 h-7 rounded-md bg-emerald-500 flex items-center justify-center">
               <TrendingUp className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-base font-bold text-white">FinFlow</span>
+            <span className="text-base font-bold text-foreground">FinFlow</span>
           </div>
 
-          <h1 className="text-2xl font-bold text-white mb-2">Create your account</h1>
-          <p className="text-white/40 text-sm mb-8">Start your financial journey — it&apos;s free</p>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Create your account</h1>
+          <p className="text-muted-foreground text-sm mb-8">Start your financial journey — it&apos;s free</p>
 
           {error && (
             <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-4 text-sm text-red-400">
@@ -92,7 +94,7 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="name" className="text-white/70 text-sm mb-1.5 block">Full name</label>
+              <label htmlFor="name" className="text-foreground/70 text-sm mb-1.5 block">Full name</label>
               <input
                 id="name"
                 type="text"
@@ -100,11 +102,11 @@ export default function RegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Smith"
                 required
-                className="w-full h-11 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:outline-none px-3 text-sm"
+                className="w-full h-11 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 focus:border-emerald-500/50 focus:outline-none px-3 text-sm"
               />
             </div>
             <div>
-              <label htmlFor="email" className="text-white/70 text-sm mb-1.5 block">Email</label>
+              <label htmlFor="email" className="text-foreground/70 text-sm mb-1.5 block">Email</label>
               <input
                 id="email"
                 type="email"
@@ -112,11 +114,11 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full h-11 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:outline-none px-3 text-sm"
+                className="w-full h-11 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 focus:border-emerald-500/50 focus:outline-none px-3 text-sm"
               />
             </div>
             <div>
-              <label htmlFor="password" className="text-white/70 text-sm mb-1.5 block">Password</label>
+              <label htmlFor="password" className="text-foreground/70 text-sm mb-1.5 block">Password</label>
               <div className="relative">
                 <input
                   id="password"
@@ -126,17 +128,17 @@ export default function RegisterPage() {
                   placeholder="Min. 8 characters"
                   required
                   minLength={8}
-                  className="w-full h-11 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:outline-none px-3 pr-10 text-sm"
+                  className="w-full h-11 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 focus:border-emerald-500/50 focus:outline-none px-3 pr-10 text-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/80 hover:text-foreground/60"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="text-white/30 text-xs mt-1.5">
+              <p className="text-muted-foreground/80 text-xs mt-1.5">
                 Must include uppercase, lowercase, a number, and a special character.
               </p>
             </div>
@@ -154,13 +156,13 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-white/30 mt-4">
+          <p className="text-center text-xs text-muted-foreground/80 mt-4">
             By creating an account you agree to our{" "}
-            <a href="#" className="text-white/50 hover:text-white/70">Terms</a> &{" "}
-            <a href="#" className="text-white/50 hover:text-white/70">Privacy Policy</a>
+            <a href="#" className="text-foreground/60 hover:text-foreground/70">Terms</a> &{" "}
+            <a href="#" className="text-foreground/60 hover:text-foreground/70">Privacy Policy</a>
           </p>
 
-          <p className="text-center text-sm text-white/40 mt-6">
+          <p className="text-center text-sm text-muted-foreground mt-6">
             Already have an account?{" "}
             <Link href="/login" className="text-emerald-400 hover:text-emerald-300 font-medium">
               Sign in

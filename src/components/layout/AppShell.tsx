@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -34,6 +34,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiPatch } from "@/lib/api";
+import ThemeToggle from "@/components/ui/theme-toggle";
+import ScrollToTop from "@/components/ui/scroll-to-top";
 
 const NAV = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
@@ -60,6 +62,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const qc = useQueryClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
 
   const { data: notifications } = useQuery({
     queryKey: ["notifications"],
@@ -102,7 +105,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex h-screen bg-[#0a0f0d] text-white overflow-hidden">
+    <div className="flex h-screen bg-background text-foreground overflow-hidden">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -114,18 +117,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed lg:static inset-y-0 left-0 z-30 w-64 flex flex-col bg-[#0d1510] border-r border-white/5 transition-transform duration-200",
+          "fixed lg:static inset-y-0 left-0 z-30 w-64 flex flex-col bg-card border-r border-border transition-transform duration-200",
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 h-16 border-b border-white/5">
+        <div className="flex items-center gap-3 px-6 h-16 border-b border-border">
           <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
             <TrendingUp className="w-4 h-4 text-white" />
           </div>
-          <span className="text-lg font-bold text-white tracking-tight">FinFlow</span>
+          <span className="text-lg font-bold text-foreground tracking-tight">FinFlow</span>
           <button className="ml-auto lg:hidden" onClick={() => setSidebarOpen(false)}>
-            <X className="w-4 h-4 text-white/50" />
+            <X className="w-4 h-4 text-foreground/60" />
           </button>
         </div>
 
@@ -146,7 +149,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium cursor-pointer transition-all duration-150",
                     active
                       ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20"
-                      : "text-white/50 hover:text-white hover:bg-white/5"
+                      : "text-foreground/60 hover:text-foreground hover:bg-accent"
                   )}
                 >
                   <item.icon
@@ -161,20 +164,20 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* User section */}
-        <div className="p-3 border-t border-white/5">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/5">
+        <div className="p-3 border-t border-border">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-accent">
             <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{user?.name}</p>
-              <p className="text-xs text-white/40 truncate capitalize">
+              <p className="text-sm font-medium text-foreground truncate">{user?.name}</p>
+              <p className="text-xs text-muted-foreground truncate capitalize">
                 {user?.userType?.replace("_", " ")}
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="text-white/30 hover:text-red-400 transition-colors"
+              className="text-muted-foreground/80 hover:text-red-400 transition-colors"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -185,17 +188,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 flex items-center gap-4 px-6 border-b border-white/5 bg-[#0a0f0d]/80 backdrop-blur-sm flex-shrink-0">
+        <header className="h-16 flex items-center gap-4 px-6 border-b border-border bg-background/80 backdrop-blur-sm flex-shrink-0">
           <button
-            className="lg:hidden text-white/50 hover:text-white"
+            className="lg:hidden text-foreground/60 hover:text-foreground"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1" />
+          <ThemeToggle className="mr-1" />
           <div className="relative">
             <button onClick={() => setNotifOpen((o) => !o)} className="relative cursor-pointer">
-              <Bell className="w-5 h-5 text-white/50 hover:text-white transition-colors" />
+              <Bell className="w-5 h-5 text-foreground/60 hover:text-foreground transition-colors" />
               {unread > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full text-[10px] font-bold flex items-center justify-center text-white">
                   {unread > 9 ? "9+" : unread}
@@ -206,9 +210,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             {notifOpen && (
               <>
                 <div className="fixed inset-0 z-30" onClick={() => setNotifOpen(false)} />
-                <div className="absolute right-0 top-9 z-40 w-80 max-h-[28rem] overflow-hidden flex flex-col bg-[#0d1510] border border-white/10 rounded-xl shadow-2xl">
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06] flex-shrink-0">
-                    <span className="text-sm font-semibold text-white">Notifications</span>
+                <div className="absolute right-0 top-9 z-40 w-80 max-h-[28rem] overflow-hidden flex flex-col bg-card border border-border rounded-xl shadow-2xl">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-border flex-shrink-0">
+                    <span className="text-sm font-semibold text-foreground">Notifications</span>
                     {unread > 0 && (
                       <button onClick={() => markAllRead.mutate()} className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300">
                         <CheckCheck className="w-3.5 h-3.5" /> Mark all read
@@ -217,17 +221,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="overflow-y-auto flex-1">
                     {notifList.length === 0 ? (
-                      <div className="py-10 text-center text-white/30 text-sm">You're all caught up.</div>
+                      <div className="py-10 text-center text-muted-foreground/80 text-sm">You're all caught up.</div>
                     ) : (
                       notifList.slice(0, 15).map((n: any) => (
                         <button key={n.id} onClick={() => !n.isRead && markRead.mutate(n.id)}
-                          className={cn("w-full text-left flex items-start gap-2.5 px-4 py-3 border-b border-white/[0.03] last:border-0 hover:bg-white/[0.03] transition-colors",
+                          className={cn("w-full text-left flex items-start gap-2.5 px-4 py-3 border-b border-border/50 last:border-0 hover:bg-accent/60 transition-colors",
                             !n.isRead && "bg-emerald-500/[0.03]")}>
                           <div className="flex-shrink-0 mt-0.5">{notifIcon(n.type)}</div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm text-white leading-snug">{n.title}</p>
-                            <p className="text-xs text-white/40 mt-0.5 line-clamp-2">{n.message}</p>
-                            <p className="text-[11px] text-white/25 mt-1">{timeAgo(n.createdAt)}</p>
+                            <p className="text-sm text-foreground leading-snug">{n.title}</p>
+                            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{n.message}</p>
+                            <p className="text-[11px] text-muted-foreground/60 mt-1">{timeAgo(n.createdAt)}</p>
                           </div>
                           {!n.isRead && <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 mt-1.5" />}
                         </button>
@@ -235,7 +239,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     )}
                   </div>
                   <Link href="/settings" onClick={() => setNotifOpen(false)}
-                    className="block text-center text-xs text-white/40 hover:text-white py-2.5 border-t border-white/[0.06] flex-shrink-0">
+                    className="block text-center text-xs text-muted-foreground hover:text-foreground py-2.5 border-t border-border flex-shrink-0">
                     View all in Settings
                   </Link>
                 </div>
@@ -245,8 +249,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main ref={mainRef} className="flex-1 overflow-y-auto relative">
+          <div key={pathname} className="animate-fade-in-up">
+            {children}
+          </div>
+        </main>
       </div>
+
+      <ScrollToTop targetRef={mainRef} />
     </div>
   );
 }

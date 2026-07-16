@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TrendingUp, Loader2, MailCheck, CheckCircle2 } from "lucide-react";
+import ThemeToggle from "@/components/ui/theme-toggle";
 import { useAuth } from "@/hooks/use-auth";
 
 function VerifyEmailContent() {
@@ -132,25 +133,26 @@ function VerifyEmailContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060a08] flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-6 py-12">
+      <ThemeToggle className="fixed top-4 right-4 z-50" />
       <div className="w-full max-w-md">
         <div className="flex items-center gap-2 mb-8 justify-center">
           <div className="w-7 h-7 rounded-md bg-emerald-500 flex items-center justify-center">
             <TrendingUp className="w-3.5 h-3.5 text-white" />
           </div>
-          <span className="text-base font-bold text-white">FinFlow</span>
+          <span className="text-base font-bold text-foreground">FinFlow</span>
         </div>
 
         {tokenVerifying ? (
           <div className="text-center py-12">
             <Loader2 className="w-8 h-8 text-emerald-400 animate-spin mx-auto mb-4" />
-            <p className="text-white/60 text-sm">Verifying your email...</p>
+            <p className="text-foreground/60 text-sm">Verifying your email...</p>
           </div>
         ) : success ? (
           <div className="text-center py-12">
             <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
-            <h1 className="text-xl font-bold text-white mb-2">Email verified!</h1>
-            <p className="text-white/40 text-sm">Redirecting you now...</p>
+            <h1 className="text-xl font-bold text-foreground mb-2">Email verified!</h1>
+            <p className="text-muted-foreground text-sm">Redirecting you now...</p>
           </div>
         ) : (
           <>
@@ -158,9 +160,9 @@ function VerifyEmailContent() {
               <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
                 <MailCheck className="w-6 h-6 text-emerald-400" />
               </div>
-              <h1 className="text-2xl font-bold text-white mb-2">Verify your email</h1>
-              <p className="text-white/40 text-sm">
-                We sent a 6-digit code{email ? <> to <span className="text-white/70">{email}</span></> : null}. Enter it below, or click the link in the email.
+              <h1 className="text-2xl font-bold text-foreground mb-2">Verify your email</h1>
+              <p className="text-muted-foreground text-sm">
+                We sent a 6-digit code{email ? <> to <span className="text-foreground/70">{email}</span></> : null}. Enter it below, or click the link in the email.
               </p>
             </div>
 
@@ -188,7 +190,7 @@ function VerifyEmailContent() {
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}
                     onPaste={handlePaste}
-                    className="w-12 h-14 text-center text-xl font-bold rounded-lg bg-white/[0.04] border border-white/10 text-white focus:border-emerald-500/50 focus:outline-none"
+                    className="w-12 h-14 text-center text-xl font-bold rounded-lg bg-card border border-border text-foreground focus:border-emerald-500/50 focus:outline-none"
                   />
                 ))}
               </div>
@@ -210,13 +212,13 @@ function VerifyEmailContent() {
               <button
                 onClick={handleResend}
                 disabled={resendCooldown > 0}
-                className="text-sm text-emerald-400 hover:text-emerald-300 disabled:text-white/30 disabled:cursor-not-allowed"
+                className="text-sm text-emerald-400 hover:text-emerald-300 disabled:text-muted-foreground/80 disabled:cursor-not-allowed"
               >
                 {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : "Didn't get a code? Resend"}
               </button>
             </div>
 
-            <p className="text-center text-sm text-white/40 mt-6">
+            <p className="text-center text-sm text-muted-foreground mt-6">
               Wrong email?{" "}
               <Link href="/register" className="text-emerald-400 hover:text-emerald-300 font-medium">
                 Start over

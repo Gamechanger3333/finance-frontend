@@ -28,11 +28,11 @@ function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   const row = payload[0].payload;
   return (
-    <div className="bg-[#0d1510] border border-white/10 rounded-lg px-3 py-2 shadow-xl">
-      <p className="text-xs text-white/50 mb-1">{new Date(label).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</p>
-      <p className={cn("text-sm font-semibold", row.balance < 0 ? "text-red-400" : "text-white")}>{fmt(row.balance)}</p>
+    <div className="bg-card border border-border rounded-lg px-3 py-2 shadow-xl">
+      <p className="text-xs text-foreground/60 mb-1">{new Date(label).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</p>
+      <p className={cn("text-sm font-semibold", row.balance < 0 ? "text-red-400" : "text-foreground")}>{fmt(row.balance)}</p>
       {row.events?.length > 0 && (
-        <div className="mt-1 pt-1 border-t border-white/10 space-y-0.5">
+        <div className="mt-1 pt-1 border-t border-border space-y-0.5">
           {row.events.map((e: any, i: number) => (
             <p key={i} className="text-xs text-yellow-400/80">{e.name} · {fmt(e.amount)}</p>
           ))}
@@ -89,17 +89,17 @@ export default function CashflowForecastPage() {
         <div className="relative h-40 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">Cash-Flow Forecast</h1>
-              <p className="text-white/50 text-sm mt-1">A look-ahead at your balance based on bills and spending habits</p>
+              <h1 className="text-2xl font-bold text-foreground">Cash-Flow Forecast</h1>
+              <p className="text-foreground/60 text-sm mt-1">A look-ahead at your balance based on bills and spending habits</p>
             </div>
-            <div className="flex gap-1 bg-white/[0.04] border border-white/[0.08] rounded-lg p-1 mt-1">
+            <div className="flex gap-1 bg-card border border-border rounded-lg p-1 mt-1">
               {RANGE_OPTIONS.map((o) => (
                 <button key={o.value} onClick={() => setDays(o.value)}
                   className={cn("px-3 py-1.5 rounded-md text-xs font-medium transition-colors",
-                    days === o.value ? "bg-emerald-500 text-white" : "text-white/50 hover:text-white")}>
+                    days === o.value ? "bg-emerald-500 text-white" : "text-foreground/60 hover:text-foreground")}>
                   {o.label}
                 </button>
               ))}
@@ -112,8 +112,8 @@ export default function CashflowForecastPage() {
             <div className="bg-red-500/[0.06] border border-red-500/20 rounded-xl p-4 flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-white">Projected overdraft risk</p>
-                <p className="text-xs text-white/50 mt-0.5">
+                <p className="text-sm font-medium text-foreground">Projected overdraft risk</p>
+                <p className="text-xs text-foreground/60 mt-0.5">
                   Based on your recent spending and upcoming bills, your balance may go negative around{" "}
                   <span className="text-red-400 font-medium">{new Date(f.overdraftDate).toLocaleDateString(undefined, { month: "long", day: "numeric" })}</span>.
                   Consider trimming discretionary spending or moving a bill payment.
@@ -123,8 +123,8 @@ export default function CashflowForecastPage() {
           )}
 
           {!isLoading && f?.startingBalanceIsEstimate && (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
-              <div className="flex items-center gap-2 text-sm text-white/60">
+            <div className="bg-card/70 border border-border rounded-xl p-4 flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-2 text-sm text-foreground/60">
                 <Wallet className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                 Your starting balance is estimated from your transaction history. Set your real balance for a more accurate forecast.
               </div>
@@ -136,7 +136,7 @@ export default function CashflowForecastPage() {
               ) : (
                 <form onSubmit={submitBalance} className="flex items-center gap-2 flex-shrink-0">
                   <input autoFocus type="number" step="0.01" value={balanceInput} onChange={(e) => setBalanceInput(e.target.value)}
-                    className="h-9 w-32 rounded-lg bg-white/[0.05] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                    className="h-9 w-32 rounded-lg bg-accent border border-border text-foreground px-3 text-sm focus:outline-none" />
                   <button type="submit" disabled={updateProfile.isPending}
                     className="h-9 px-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white rounded-lg text-xs font-medium flex items-center transition-colors">
                     {updateProfile.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Save"}
@@ -147,33 +147,33 @@ export default function CashflowForecastPage() {
           )}
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1 flex items-center gap-1.5"><Wallet className="w-3.5 h-3.5" /> Starting Balance</p>
-              <p className="text-xl font-bold text-white">{isLoading ? "—" : fmt(f.startingBalance)}</p>
-              {f?.startingBalanceIsEstimate && <p className="text-[11px] text-white/30 mt-0.5">Estimated</p>}
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1.5"><Wallet className="w-3.5 h-3.5" /> Starting Balance</p>
+              <p className="text-xl font-bold text-foreground">{isLoading ? "—" : fmt(f.startingBalance)}</p>
+              {f?.startingBalanceIsEstimate && <p className="text-[11px] text-muted-foreground/80 mt-0.5">Estimated</p>}
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1 flex items-center gap-1.5"><TrendingDown className="w-3.5 h-3.5" /> Lowest Projected</p>
-              <p className={cn("text-xl font-bold", f?.lowestPoint?.balance < 0 ? "text-red-400" : "text-white")}>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1.5"><TrendingDown className="w-3.5 h-3.5" /> Lowest Projected</p>
+              <p className={cn("text-xl font-bold", f?.lowestPoint?.balance < 0 ? "text-red-400" : "text-foreground")}>
                 {isLoading ? "—" : fmt(f.lowestPoint.balance)}
               </p>
-              {!isLoading && <p className="text-[11px] text-white/30 mt-0.5">{new Date(f.lowestPoint.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</p>}
+              {!isLoading && <p className="text-[11px] text-muted-foreground/80 mt-0.5">{new Date(f.lowestPoint.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</p>}
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1 flex items-center gap-1.5"><Activity className="w-3.5 h-3.5" /> Overdraft Risk</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1.5"><Activity className="w-3.5 h-3.5" /> Overdraft Risk</p>
               <p className={cn("text-xl font-bold flex items-center gap-1.5", hasOverdraft ? "text-red-400" : "text-emerald-400")}>
                 {isLoading ? "—" : hasOverdraft ? "At risk" : <>None <CheckCircle2 className="w-4 h-4" /></>}
               </p>
             </div>
           </div>
 
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+          <div className="bg-card/70 border border-border rounded-xl p-5">
             <div className="flex items-center gap-2 mb-4">
               <Activity className="w-4 h-4 text-emerald-400" />
-              <h2 className="font-semibold text-white text-sm">Projected Balance</h2>
+              <h2 className="font-semibold text-foreground text-sm">Projected Balance</h2>
             </div>
             {isLoading ? (
-              <div className="h-72 bg-white/[0.03] rounded-lg animate-pulse" />
+              <div className="h-72 bg-card/70 rounded-lg animate-pulse" />
             ) : (
               <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
@@ -199,23 +199,23 @@ export default function CashflowForecastPage() {
             )}
           </div>
 
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
+          <div className="bg-card/70 border border-border rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-border flex items-center gap-2">
               <CalendarClock className="w-4 h-4 text-emerald-400" />
-              <h2 className="font-semibold text-white text-sm">Upcoming Bill Events</h2>
+              <h2 className="font-semibold text-foreground text-sm">Upcoming Bill Events</h2>
             </div>
             {isLoading ? (
-              <div className="p-5 space-y-2">{[...Array(3)].map((_, i) => <div key={i} className="h-8 bg-white/[0.03] rounded animate-pulse" />)}</div>
+              <div className="p-5 space-y-2">{[...Array(3)].map((_, i) => <div key={i} className="h-8 bg-card/70 rounded animate-pulse" />)}</div>
             ) : allEvents.length === 0 ? (
-              <div className="px-5 py-8 text-center text-white/30 text-sm">No recurring bills fall within this window.</div>
+              <div className="px-5 py-8 text-center text-muted-foreground/80 text-sm">No recurring bills fall within this window.</div>
             ) : (
-              <div className="divide-y divide-white/[0.04]">
+              <div className="divide-y divide-border">
                 {allEvents.map((e: any, i: number) => (
                   <div key={i} className="px-5 py-3 flex items-center justify-between">
-                    <span className="text-sm text-white/70">{e.name}</span>
+                    <span className="text-sm text-foreground/70">{e.name}</span>
                     <div className="flex items-center gap-4">
-                      <span className="text-xs text-white/30">{new Date(e.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span>
-                      <span className="text-sm font-medium text-white/80">{fmt(e.amount)}</span>
+                      <span className="text-xs text-muted-foreground/80">{new Date(e.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span>
+                      <span className="text-sm font-medium text-foreground/80">{fmt(e.amount)}</span>
                     </div>
                   </div>
                 ))}

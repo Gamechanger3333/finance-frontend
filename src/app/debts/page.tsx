@@ -125,11 +125,11 @@ export default function DebtsPage() {
         <div className="relative h-40 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">Debt Payoff Planner</h1>
-              <p className="text-white/50 text-sm mt-1">A concrete strategy and timeline to become debt-free</p>
+              <h1 className="text-2xl font-bold text-foreground">Debt Payoff Planner</h1>
+              <p className="text-foreground/60 text-sm mt-1">A concrete strategy and timeline to become debt-free</p>
             </div>
             <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-2 rounded-lg text-sm font-medium mt-1 transition-colors">
               <Plus className="w-4 h-4" /> Add Debt
@@ -139,57 +139,57 @@ export default function DebtsPage() {
 
         <div className="px-6 pb-8 -mt-2 space-y-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Total Debt</p>
-              <p className="text-xl font-bold text-white">{fmt(totalBalance)}</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Total Debt</p>
+              <p className="text-xl font-bold text-foreground">{fmt(totalBalance)}</p>
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Monthly Minimums</p>
-              <p className="text-xl font-bold text-white">{fmt(totalMinimum)}</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Monthly Minimums</p>
+              <p className="text-xl font-bold text-foreground">{fmt(totalMinimum)}</p>
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Avg. Interest Rate</p>
-              <p className="text-xl font-bold text-white">{avgRate.toFixed(1)}%</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Avg. Interest Rate</p>
+              <p className="text-xl font-bold text-foreground">{avgRate.toFixed(1)}%</p>
             </div>
-            <div className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-4">
-              <p className="text-xs text-white/40 mb-1">Active Debts</p>
+            <div className="bg-card border border-border rounded-xl p-4">
+              <p className="text-xs text-muted-foreground mb-1">Active Debts</p>
               <p className="text-xl font-bold text-emerald-400">{activeDebts.length}</p>
             </div>
           </div>
 
           {/* Debt list */}
           {isLoading ? (
-            <div className="grid md:grid-cols-2 gap-4">{[...Array(2)].map((_, i) => <div key={i} className="h-28 bg-white/[0.03] rounded-xl animate-pulse" />)}</div>
+            <div className="grid md:grid-cols-2 gap-4">{[...Array(2)].map((_, i) => <div key={i} className="h-28 bg-card/70 rounded-xl animate-pulse" />)}</div>
           ) : debtsArr.length === 0 ? (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-12 text-center">
-              <CreditCard className="w-10 h-10 text-white/20 mx-auto mb-3" />
-              <p className="text-white/40 text-sm">No debts tracked yet. Add one to build your payoff plan.</p>
+            <div className="bg-card/70 border border-border rounded-xl p-12 text-center">
+              <CreditCard className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
+              <p className="text-muted-foreground text-sm">No debts tracked yet. Add one to build your payoff plan.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               {debtsArr.map((d) => {
                 const Icon = typeIcon(d.debtType);
                 return (
-                  <div key={d.id} className={cn("bg-white/[0.04] border rounded-xl p-5 group transition-all",
-                    d.isPaidOff ? "border-emerald-500/20 opacity-60" : "border-white/[0.06] hover:border-emerald-500/20")}>
+                  <div key={d.id} className={cn("bg-card border rounded-xl p-5 group transition-all",
+                    d.isPaidOff ? "border-emerald-500/20 opacity-60" : "border-border hover:border-emerald-500/20")}>
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
                           <Icon className="w-4 h-4 text-emerald-400" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-white">{d.name}</h3>
-                          <span className="text-xs text-white/30">{typeLabel(d.debtType)} · {d.interestRate}% APR</span>
+                          <h3 className="font-semibold text-foreground">{d.name}</h3>
+                          <span className="text-xs text-muted-foreground/80">{typeLabel(d.debtType)} · {d.interestRate}% APR</span>
                         </div>
                       </div>
-                      <button onClick={() => deleteDebt.mutate(d.id)} className="text-white/20 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+                      <button onClick={() => deleteDebt.mutate(d.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
 
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-2xl font-bold text-white">{fmt2(d.balance)}</span>
-                      <span className="text-xs text-white/30">Min. {fmt2(d.minimumPayment)}/mo</span>
+                      <span className="text-2xl font-bold text-foreground">{fmt2(d.balance)}</span>
+                      <span className="text-xs text-muted-foreground/80">Min. {fmt2(d.minimumPayment)}/mo</span>
                     </div>
 
                     {d.isPaidOff ? (
@@ -197,16 +197,16 @@ export default function DebtsPage() {
                     ) : payingId === d.id ? (
                       <div className="flex items-center gap-2">
                         <input autoFocus type="number" step="0.01" min="0" value={payAmount} onChange={(e) => setPayAmount(e.target.value)}
-                          placeholder="Amount" className="flex-1 h-9 rounded-lg bg-white/[0.05] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                          placeholder="Amount" className="flex-1 h-9 rounded-lg bg-accent border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                         <button onClick={() => submitPayment(d.id)} disabled={logPayment.isPending}
                           className="h-9 px-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white rounded-lg text-xs font-medium transition-colors">
                           {logPayment.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Log"}
                         </button>
-                        <button onClick={() => setPayingId(null)} className="text-white/30 hover:text-white"><X className="w-4 h-4" /></button>
+                        <button onClick={() => setPayingId(null)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-4 h-4" /></button>
                       </div>
                     ) : (
                       <button onClick={() => { setPayingId(d.id); setPayAmount(String(d.minimumPayment)); }}
-                        className="w-full text-xs bg-white/[0.05] hover:bg-emerald-500/15 text-white/60 hover:text-emerald-400 border border-white/10 hover:border-emerald-500/30 px-3 py-2 rounded-lg transition-colors">
+                        className="w-full text-xs bg-accent hover:bg-emerald-500/15 text-foreground/60 hover:text-emerald-400 border border-border hover:border-emerald-500/30 px-3 py-2 rounded-lg transition-colors">
                         Log a payment
                       </button>
                     )}
@@ -218,24 +218,24 @@ export default function DebtsPage() {
 
           {/* Payoff planner */}
           {activeDebts.length > 0 && (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+            <div className="bg-card/70 border border-border rounded-xl p-5">
               <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
                 <div className="flex items-center gap-2">
                   <PiggyBank className="w-4 h-4 text-emerald-400" />
-                  <h2 className="font-semibold text-white text-sm">Payoff Strategy</h2>
+                  <h2 className="font-semibold text-foreground text-sm">Payoff Strategy</h2>
                 </div>
                 <div className="flex items-center gap-2">
-                  <label className="text-xs text-white/40">Extra monthly payment</label>
-                  <div className="flex items-center gap-1 bg-white/[0.05] border border-white/10 rounded-lg px-2.5 h-9">
-                    <DollarSign className="w-3.5 h-3.5 text-white/30" />
+                  <label className="text-xs text-muted-foreground">Extra monthly payment</label>
+                  <div className="flex items-center gap-1 bg-accent border border-border rounded-lg px-2.5 h-9">
+                    <DollarSign className="w-3.5 h-3.5 text-muted-foreground/80" />
                     <input type="number" min="0" step="10" value={extraMonthly} onChange={(e) => setExtraMonthly(Math.max(0, Number(e.target.value) || 0))}
-                      className="w-20 bg-transparent text-white text-sm focus:outline-none" />
+                      className="w-20 bg-transparent text-foreground text-sm focus:outline-none" />
                   </div>
                 </div>
               </div>
 
               {loadingPlan ? (
-                <div className="h-64 bg-white/[0.03] rounded-lg animate-pulse" />
+                <div className="h-64 bg-card/70 rounded-lg animate-pulse" />
               ) : p ? (
                 <>
                   <div className="grid md:grid-cols-2 gap-4 mb-6">
@@ -245,23 +245,23 @@ export default function DebtsPage() {
                       return (
                         <button key={s} onClick={() => setStrategy(s)}
                           className={cn("text-left rounded-xl border p-4 transition-all",
-                            isActive ? "border-emerald-500/40 bg-emerald-500/[0.06]" : "border-white/[0.08] bg-white/[0.02] hover:border-white/20")}>
+                            isActive ? "border-emerald-500/40 bg-emerald-500/[0.06]" : "border-border bg-card/50 hover:border-border")}>
                           <div className="flex items-center gap-2 mb-2">
                             {s === "snowball" ? <Snowflake className="w-4 h-4 text-blue-400" /> : <Mountain className="w-4 h-4 text-orange-400" />}
-                            <span className="font-semibold text-white text-sm capitalize">{s}</span>
+                            <span className="font-semibold text-foreground text-sm capitalize">{s}</span>
                             {isActive && <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded-full ml-auto">Selected</span>}
                           </div>
-                          <p className="text-xs text-white/40 mb-3">
+                          <p className="text-xs text-muted-foreground mb-3">
                             {s === "snowball" ? "Smallest balance first — quick wins for motivation" : "Highest interest rate first — saves the most money"}
                           </p>
                           <div className="grid grid-cols-2 gap-2 text-xs">
                             <div>
-                              <p className="text-white/30">Debt-free in</p>
-                              <p className="text-white font-semibold">{plan.neverPaysOff ? "50+ yrs" : `${plan.months} mo`}</p>
+                              <p className="text-muted-foreground/80">Debt-free in</p>
+                              <p className="text-foreground font-semibold">{plan.neverPaysOff ? "50+ yrs" : `${plan.months} mo`}</p>
                             </div>
                             <div>
-                              <p className="text-white/30">Total interest</p>
-                              <p className="text-white font-semibold">{fmt(plan.totalInterestPaid)}</p>
+                              <p className="text-muted-foreground/80">Total interest</p>
+                              <p className="text-foreground font-semibold">{fmt(plan.totalInterestPaid)}</p>
                             </div>
                           </div>
                         </button>
@@ -292,12 +292,12 @@ export default function DebtsPage() {
                   </div>
 
                   <div>
-                    <h3 className="text-xs font-semibold text-white/50 mb-2 uppercase tracking-wide">Payoff order ({strategy})</h3>
+                    <h3 className="text-xs font-semibold text-foreground/60 mb-2 uppercase tracking-wide">Payoff order ({strategy})</h3>
                     <div className="space-y-1.5">
                       {chosen.payoffOrder.map((entry: any, i: number) => (
-                        <div key={entry.id} className="flex items-center justify-between text-sm bg-white/[0.02] rounded-lg px-3 py-2">
-                          <span className="text-white/70">{i + 1}. {entry.name}</span>
-                          <span className="text-white/40 text-xs">Paid off month {entry.payoffMonth}</span>
+                        <div key={entry.id} className="flex items-center justify-between text-sm bg-card/50 rounded-lg px-3 py-2">
+                          <span className="text-foreground/70">{i + 1}. {entry.name}</span>
+                          <span className="text-muted-foreground text-xs">Paid off month {entry.payoffMonth}</span>
                         </div>
                       ))}
                     </div>
@@ -310,40 +310,40 @@ export default function DebtsPage() {
 
         {showForm && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-[#0d1510] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-bold text-white text-lg">Add Debt</h2>
-                <button onClick={() => setShowForm(false)} className="text-white/30 hover:text-white"><X className="w-5 h-5" /></button>
+                <h2 className="font-bold text-foreground text-lg">Add Debt</h2>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Debt Name</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Debt Name</label>
                   <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="e.g. Chase Sapphire" required
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                 </div>
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Type</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Type</label>
                   <select value={form.debtType} onChange={(e) => setForm((f) => ({ ...f, debtType: e.target.value }))}
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white text-sm px-3">
-                    {DEBT_TYPES.map((t) => <option key={t.value} value={t.value} className="bg-[#0d1510]">{t.label}</option>)}
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground text-sm px-3">
+                    {DEBT_TYPES.map((t) => <option key={t.value} value={t.value} className="bg-card">{t.label}</option>)}
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Balance ($)</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Balance ($)</label>
                     <input type="number" step="0.01" min="0" value={form.balance} onChange={(e) => setForm((f) => ({ ...f, balance: e.target.value }))} placeholder="0.00" required
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                   </div>
                   <div>
-                    <label className="text-white/70 text-sm mb-1.5 block">Interest Rate (%)</label>
+                    <label className="text-foreground/70 text-sm mb-1.5 block">Interest Rate (%)</label>
                     <input type="number" step="0.01" min="0" value={form.interestRate} onChange={(e) => setForm((f) => ({ ...f, interestRate: e.target.value }))} placeholder="e.g. 19.99"
-                      className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                      className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                   </div>
                 </div>
                 <div>
-                  <label className="text-white/70 text-sm mb-1.5 block">Minimum Payment ($/mo)</label>
+                  <label className="text-foreground/70 text-sm mb-1.5 block">Minimum Payment ($/mo)</label>
                   <input type="number" step="0.01" min="0" value={form.minimumPayment} onChange={(e) => setForm((f) => ({ ...f, minimumPayment: e.target.value }))} placeholder="0.00" required
-                    className="w-full h-10 rounded-lg bg-white/[0.04] border border-white/10 text-white placeholder:text-white/20 px-3 text-sm focus:outline-none" />
+                    className="w-full h-10 rounded-lg bg-card border border-border text-foreground placeholder:text-muted-foreground/60 px-3 text-sm focus:outline-none" />
                 </div>
                 <button type="submit" disabled={createDebt.isPending}
                   className="w-full h-10 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white rounded-lg font-medium flex items-center justify-center transition-colors mt-2">

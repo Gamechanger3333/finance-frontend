@@ -141,10 +141,10 @@ export default function ReceiptsPage() {
         <div className="relative h-40 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f0d]/70 to-[#0a0f0d]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
           <div className="relative z-10 px-6 pt-8">
-            <h1 className="text-2xl font-bold text-white">Receipt Scanner</h1>
-            <p className="text-white/50 text-sm mt-1">Snap a photo, we'll read the total and log it for you</p>
+            <h1 className="text-2xl font-bold text-foreground">Receipt Scanner</h1>
+            <p className="text-foreground/60 text-sm mt-1">Snap a photo, we'll read the total and log it for you</p>
           </div>
         </div>
 
@@ -152,57 +152,57 @@ export default function ReceiptsPage() {
           <input ref={fileInputRef} type="file" accept="image/*" capture="environment" onChange={onFileChange} className="hidden" id="receipt-upload" />
 
           {!imagePreview ? (
-            <label htmlFor="receipt-upload" className="cursor-pointer flex flex-col items-center justify-center gap-3 bg-white/[0.03] border-2 border-dashed border-white/10 hover:border-emerald-500/30 rounded-xl p-12 text-center transition-colors">
+            <label htmlFor="receipt-upload" className="cursor-pointer flex flex-col items-center justify-center gap-3 bg-card/70 border-2 border-dashed border-border hover:border-emerald-500/30 rounded-xl p-12 text-center transition-colors">
               <div className="w-14 h-14 rounded-full bg-emerald-500/10 flex items-center justify-center">
                 <Camera className="w-6 h-6 text-emerald-400" />
               </div>
               <div>
-                <p className="text-white font-medium">Take or upload a photo</p>
-                <p className="text-white/40 text-sm mt-1">We'll pull out the merchant, total, and date automatically</p>
+                <p className="text-foreground font-medium">Take or upload a photo</p>
+                <p className="text-muted-foreground text-sm mt-1">We'll pull out the merchant, total, and date automatically</p>
               </div>
               <span className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg">
                 <Upload className="w-3.5 h-3.5" /> Choose a file
               </span>
             </label>
           ) : (
-            <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-5">
+            <div className="bg-card/70 border border-border rounded-xl p-5">
               <div className="flex gap-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={imagePreview} alt="Receipt" className="w-28 h-36 object-cover rounded-lg border border-white/10 flex-shrink-0" />
+                <img src={imagePreview} alt="Receipt" className="w-28 h-36 object-cover rounded-lg border border-border flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   {scanning ? (
                     <div className="flex flex-col items-start gap-2 h-full justify-center">
-                      <div className="flex items-center gap-2 text-white/70 text-sm">
+                      <div className="flex items-center gap-2 text-foreground/70 text-sm">
                         <ScanLine className="w-4 h-4 text-emerald-400 animate-pulse" /> Reading receipt... {progress}%
                       </div>
-                      <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-accent rounded-full overflow-hidden">
                         <div className="h-full bg-emerald-500 transition-all" style={{ width: `${progress}%` }} />
                       </div>
                     </div>
                   ) : form ? (
                     <div className="space-y-3">
                       <div>
-                        <label className="text-white/50 text-xs mb-1 block">Merchant</label>
+                        <label className="text-foreground/60 text-xs mb-1 block">Merchant</label>
                         <input value={form.description} onChange={(e) => setForm((f) => f && { ...f, description: e.target.value })}
-                          className="w-full h-9 rounded-lg bg-white/[0.05] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                          className="w-full h-9 rounded-lg bg-accent border border-border text-foreground px-3 text-sm focus:outline-none" />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="text-white/50 text-xs mb-1 block">Amount ($)</label>
+                          <label className="text-foreground/60 text-xs mb-1 block">Amount ($)</label>
                           <input type="number" step="0.01" value={form.amount} onChange={(e) => setForm((f) => f && { ...f, amount: e.target.value })}
-                            className="w-full h-9 rounded-lg bg-white/[0.05] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                            className="w-full h-9 rounded-lg bg-accent border border-border text-foreground px-3 text-sm focus:outline-none" />
                         </div>
                         <div>
-                          <label className="text-white/50 text-xs mb-1 block">Date</label>
+                          <label className="text-foreground/60 text-xs mb-1 block">Date</label>
                           <input type="date" value={form.date} onChange={(e) => setForm((f) => f && { ...f, date: e.target.value })}
-                            className="w-full h-9 rounded-lg bg-white/[0.05] border border-white/10 text-white px-3 text-sm focus:outline-none" />
+                            className="w-full h-9 rounded-lg bg-accent border border-border text-foreground px-3 text-sm focus:outline-none" />
                         </div>
                       </div>
                       <div>
-                        <label className="text-white/50 text-xs mb-1 block">Category</label>
+                        <label className="text-foreground/60 text-xs mb-1 block">Category</label>
                         <select value={form.categoryId} onChange={(e) => setForm((f) => f && { ...f, categoryId: e.target.value })}
-                          className="w-full h-9 rounded-lg bg-white/[0.05] border border-white/10 text-white text-sm px-3">
-                          {expenseCategories.map((c: any) => <option key={c.id} value={c.id} className="bg-[#0d1510]">{c.name}</option>)}
+                          className="w-full h-9 rounded-lg bg-accent border border-border text-foreground text-sm px-3">
+                          {expenseCategories.map((c: any) => <option key={c.id} value={c.id} className="bg-card">{c.name}</option>)}
                         </select>
                       </div>
                       {!form.amount && (
@@ -219,35 +219,35 @@ export default function ReceiptsPage() {
                     className="flex-1 h-10 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-white rounded-lg font-medium flex items-center justify-center gap-1.5 transition-colors">
                     {createTx.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />} Log Expense
                   </button>
-                  <button onClick={reset} className="h-10 px-4 bg-white/[0.05] hover:bg-white/10 text-white/60 rounded-lg flex items-center gap-1.5 text-sm transition-colors">
+                  <button onClick={reset} className="h-10 px-4 bg-accent hover:bg-accent text-foreground/60 rounded-lg flex items-center gap-1.5 text-sm transition-colors">
                     <RotateCcw className="w-3.5 h-3.5" /> Retry
                   </button>
                 </div>
               )}
               {!scanning && !form && (
-                <button onClick={reset} className="mt-4 h-9 px-4 bg-white/[0.05] hover:bg-white/10 text-white/60 rounded-lg flex items-center gap-1.5 text-sm transition-colors">
+                <button onClick={reset} className="mt-4 h-9 px-4 bg-accent hover:bg-accent text-foreground/60 rounded-lg flex items-center gap-1.5 text-sm transition-colors">
                   <X className="w-3.5 h-3.5" /> Cancel
                 </button>
               )}
             </div>
           )}
 
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
+          <div className="bg-card/70 border border-border rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-border flex items-center gap-2">
               <ReceiptText className="w-4 h-4 text-emerald-400" />
-              <h2 className="font-semibold text-white text-sm">Recently Scanned</h2>
+              <h2 className="font-semibold text-foreground text-sm">Recently Scanned</h2>
             </div>
             {scannedTx.length === 0 ? (
-              <div className="px-5 py-8 text-center text-white/30 text-sm">No scanned receipts yet.</div>
+              <div className="px-5 py-8 text-center text-muted-foreground/80 text-sm">No scanned receipts yet.</div>
             ) : (
-              <div className="divide-y divide-white/[0.04]">
+              <div className="divide-y divide-border">
                 {scannedTx.map((t: any) => (
                   <div key={t.id} className="px-5 py-3 flex items-center justify-between">
                     <div className="min-w-0">
-                      <p className="text-sm text-white/70 truncate">{t.description || t.categoryName}</p>
-                      <p className="text-xs text-white/30">{t.date}</p>
+                      <p className="text-sm text-foreground/70 truncate">{t.description || t.categoryName}</p>
+                      <p className="text-xs text-muted-foreground/80">{t.date}</p>
                     </div>
-                    <span className="text-sm font-medium text-white/80 flex-shrink-0 ml-3">{fmt(t.amount)}</span>
+                    <span className="text-sm font-medium text-foreground/80 flex-shrink-0 ml-3">{fmt(t.amount)}</span>
                   </div>
                 ))}
               </div>
