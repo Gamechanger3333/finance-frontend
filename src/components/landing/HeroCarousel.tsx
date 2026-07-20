@@ -24,9 +24,9 @@ const SLIDES = [
     subtext: "An AI advisor powered by Llama 3.3 gives personalized budget tips and savings recommendations, instantly.",
   },
   {
-    image: "https://images.unsplash.com/photo-1619718082268-5a1b74988497?w=2400&q=85&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1671058560955-4e5dbdcd9aba?w=2400&q=85&auto=format&fit=crop",
     focal: "object-center",
-    alt: "Gold and silver coins stacked, representing savings goals",
+    alt: "Stack of silver coins on a studio background, representing savings goals",
     badge: "Goal Tracking",
     headline: "Watch your goals",
     accent: "become real.",
@@ -89,7 +89,7 @@ export default function HeroCarousel() {
       {/* Very light scrim, just for overall grounding — the glass panel below does the real legibility work */}
       <div className="absolute inset-0 bg-black/20" />
 
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col justify-end pb-10 sm:pb-16">
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col justify-end pb-20 sm:pb-16">
         {/* key={index} remounts this block so animate-fade-in-up replays on every slide change */}
         {/* Solid glass panel behind the text — legibility never depends on what the photo behind it looks like.
             The stat row lives inside this panel instead of floating separately, so it can never clip

@@ -108,7 +108,7 @@ export default function LandingAssistant() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-3">
+    <div className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[60] flex flex-col items-end gap-3">
       {/* Scroll-triggered contextual suggestion bubble */}
       <AnimatePresence>
         {hint && !open && (
@@ -117,7 +117,7 @@ export default function LandingAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             onClick={() => openChat(hint)}
-            className="max-w-[240px] text-left bg-card border border-emerald-500/30 rounded-2xl rounded-br-sm px-4 py-3 text-sm text-foreground/80 shadow-2xl hover:border-emerald-500/50 transition-colors"
+            className="hidden sm:block max-w-[240px] text-left bg-card border border-emerald-500/30 rounded-2xl rounded-br-sm px-4 py-3 text-sm text-foreground/80 shadow-2xl hover:border-emerald-500/50 transition-colors"
           >
             <span className="flex items-center gap-1.5 text-emerald-400 text-xs font-semibold mb-1">
               <Sparkles className="w-3 h-3" /> FinFlow Assistant
@@ -230,7 +230,7 @@ export default function LandingAssistant() {
       <motion.button
         onClick={() => (open ? setOpen(false) : openChat())}
         whileTap={{ scale: 0.94 }}
-        className="w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-2xl flex items-center justify-center transition-colors relative"
+        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-2xl flex items-center justify-center transition-colors relative"
       >
         <AnimatePresence mode="wait">
           {open ? (
