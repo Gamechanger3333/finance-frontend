@@ -15,10 +15,17 @@ export default function ScrollToTop({
   targetRef,
   threshold = 120,
   className,
+  corner = "bottom-right",
+  offset = 24,
 }: {
   targetRef?: React.RefObject<HTMLElement>;
   threshold?: number;
   className?: string;
+  /** Which corner to pin the button to. Use "bottom-left" to avoid clashing
+   * with other bottom-right floating widgets (e.g. an AI assistant button). */
+  corner?: "bottom-right" | "bottom-left";
+  /** Distance in px from the edges. */
+  offset?: number;
 }) {
   const [visible, setVisible] = useState(false);
   const rafRef = useRef<number | null>(null);
@@ -60,8 +67,13 @@ export default function ScrollToTop({
       onClick={handleClick}
       aria-label="Scroll to top"
       title="Scroll to top"
+      style={{
+        position: "fixed",
+        bottom: offset,
+        ...(corner === "bottom-left" ? { left: offset } : { right: offset }),
+      }}
       className={cn(
-        "fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center",
+        "z-40 w-11 h-11 rounded-full flex items-center justify-center",
         "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-400",
         "transition-all duration-200",
         visible

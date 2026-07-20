@@ -1,9 +1,10 @@
 import Link from "next/link";
 import {
   TrendingUp, BarChart3, Shield, Bot, Target, Zap,
-  ArrowRight, Check, ChevronRight, Star,
+  Check, ChevronRight, Star,
 } from "lucide-react";
 import LandingAssistant from "@/components/landing/LandingAssistant";
+import HeroCarousel from "@/components/landing/HeroCarousel";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import ScrollToTop from "@/components/ui/scroll-to-top";
 import Reveal from "@/components/ui/reveal";
@@ -61,53 +62,8 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-24 pb-20 px-6">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div className="animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 text-emerald-400 text-sm font-medium mb-6">
-              <Zap className="w-3.5 h-3.5" />AI-Powered Finance Management
-            </div>
-            <h1 className="text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-6">
-              Take control of your{" "}
-              <span className="text-emerald-400">financial future</span>
-            </h1>
-            <p className="text-lg text-foreground/60 leading-relaxed mb-8 max-w-lg">
-              FinFlow combines smart budgeting, real-time analytics, and an AI advisor powered by Llama 3.3 to help you reach your financial goals faster.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/register" className="inline-flex items-center bg-emerald-500 hover:bg-emerald-400 hover:-translate-y-0.5 text-white px-8 py-3 rounded-xl font-semibold text-base transition-all">
-                Start for free <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
-              <Link href="/login" className="inline-flex items-center border border-border text-foreground hover:bg-card/70 hover:-translate-y-0.5 px-8 py-3 rounded-xl font-semibold text-base transition-all">
-                Try demo account
-              </Link>
-            </div>
-            <p className="mt-4 text-sm text-muted-foreground/80">No credit card required · Free plan available</p>
-          </div>
-
-          <div className="relative animate-fade-in-up stagger-2">
-            <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-3xl scale-95 animate-float" />
-            <div className="relative rounded-2xl overflow-hidden border border-border shadow-2xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80" alt="FinFlow dashboard" className="w-full h-80 object-cover" />
-              <div className="absolute bottom-4 left-4 right-4 bg-card/90 backdrop-blur-sm border border-border rounded-xl p-4 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">This month&apos;s savings</p>
-                  <p className="text-lg font-bold text-emerald-400">+$1,240.50</p>
-                </div>
-                <div className="ml-auto text-right">
-                  <p className="text-xs text-muted-foreground">vs last month</p>
-                  <p className="text-sm font-semibold text-emerald-400">↑ 23.4%</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero — auto-rotating, feature-themed background carousel */}
+      <HeroCarousel />
 
       {/* Stats */}
       <section className="py-12 border-y border-border/70 bg-card/50">
@@ -122,12 +78,27 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-24 px-6">
+      <section id="features" className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Everything you need to master your finances</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">From AI-powered insights to automated budgeting, FinFlow has all the tools you need.</p>
           </div>
+          <Reveal>
+            <div className="relative rounded-2xl overflow-hidden border border-border mb-10 sm:mb-12 h-48 sm:h-64 lg:h-80">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=2200&q=85&auto=format&fit=crop"
+                alt="Team planning a financial workflow together"
+                className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <p className="text-white font-semibold text-lg">Built for how real teams manage money</p>
+                <p className="text-white/70 text-sm mt-1">One workspace for tracking, budgeting, and planning together.</p>
+              </div>
+            </div>
+          </Reveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
               <Reveal key={f.title} delayMs={(i % 3) * 80}>
@@ -145,12 +116,27 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-24 px-6">
+      <section id="pricing" className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Simple, transparent pricing</h2>
             <p className="text-muted-foreground text-lg">Start free. Upgrade when you need more power.</p>
           </div>
+          <Reveal>
+            <div className="relative rounded-2xl overflow-hidden border border-border mb-10 sm:mb-12 h-44 sm:h-56 lg:h-64 max-w-5xl mx-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=2200&q=85&auto=format&fit=crop"
+                alt="Colleagues comparing plans on a laptop"
+                className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <p className="text-white font-semibold text-lg">No hidden fees, ever</p>
+                <p className="text-white/70 text-sm mt-1">Pick a plan today, change it anytime as your needs grow.</p>
+              </div>
+            </div>
+          </Reveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {PLANS.map((plan, i) => (
               <Reveal key={plan.name} delayMs={i * 100}>
@@ -184,25 +170,32 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-24 px-6 border-t border-border/70">
-        <div className="max-w-7xl mx-auto">
+      <section id="testimonials" className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://images.unsplash.com/photo-1568992688065-536aad8a12f6?w=2400&q=85&auto=format&fit=crop"
+          alt="People discussing their experience with FinFlow"
+          className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/80" />
+        <div className="relative z-10 max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Loved by thousands</h2>
-            <p className="text-muted-foreground text-lg">Here&apos;s what our users say about FinFlow.</p>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-white [text-shadow:0_2px_12px_rgb(0_0_0_/_60%)]">Loved by thousands</h2>
+            <p className="text-white/85 text-lg">Here&apos;s what our users say about FinFlow.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t, i) => (
               <Reveal key={t.name} delayMs={i * 100}>
-                <div className="bg-card/70 border border-border rounded-xl p-6 hover:-translate-y-1 transition-transform duration-200">
+                <div className="bg-black/45 backdrop-blur-md border border-white/15 rounded-xl p-6 hover:-translate-y-1 hover:bg-black/55 transition-all duration-200">
                   <div className="flex gap-0.5 mb-4">
                     {Array.from({ length: t.rating }).map((_, j) => (
                       <Star key={j} className="w-4 h-4 fill-emerald-400 text-emerald-400" />
                     ))}
                   </div>
-                  <p className="text-foreground/70 text-sm leading-relaxed mb-4">&quot;{t.text}&quot;</p>
+                  <p className="text-white/90 text-sm leading-relaxed mb-4">&quot;{t.text}&quot;</p>
                   <div>
-                    <p className="font-semibold text-sm">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}</p>
+                    <p className="font-semibold text-sm text-white">{t.name}</p>
+                    <p className="text-xs text-white/65">{t.role}</p>
                   </div>
                 </div>
               </Reveal>
@@ -212,14 +205,21 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-6">
-        <Reveal className="max-w-3xl mx-auto text-center" as="div">
-          <h2 className="text-4xl font-bold mb-4">Start your financial journey today</h2>
-          <p className="text-muted-foreground text-lg mb-8">Join 50,000+ people who&apos;ve transformed their finances with FinFlow.</p>
+      <section className="relative py-16 sm:py-28 px-4 sm:px-6 overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=2400&q=85&auto=format&fit=crop"
+          alt="A team presenting their financial progress"
+          className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+        <Reveal className="relative z-10 max-w-3xl mx-auto text-center" as="div">
+          <h2 className="text-4xl font-bold mb-4 text-white [text-shadow:0_2px_16px_rgb(0_0_0_/_60%)]">Start your financial journey today</h2>
+          <p className="text-white/85 text-lg mb-8">Join 50,000+ people who&apos;ve transformed their finances with FinFlow.</p>
           <Link href="/register" className="inline-flex items-center bg-emerald-500 hover:bg-emerald-400 hover:-translate-y-0.5 text-white px-10 py-3 rounded-xl font-semibold text-base transition-all">
             Create free account <ChevronRight className="ml-1 w-4 h-4" />
           </Link>
-          <p className="mt-4 text-sm text-muted-foreground/80">Or <Link href="/login" className="text-emerald-400 hover:underline">sign in</Link> to your existing account</p>
+          <p className="mt-4 text-sm text-white/60">Or <Link href="/login" className="text-emerald-400 hover:underline">sign in</Link> to your existing account</p>
         </Reveal>
       </section>
 
@@ -241,7 +241,7 @@ export default function LandingPage() {
       </footer>
 
       <LandingAssistant />
-      <ScrollToTop />
+      <ScrollToTop corner="bottom-left" />
     </div>
   );
 }
