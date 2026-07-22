@@ -133,3 +133,8 @@ button:not(:disabled):active {
   );
   background-size: 1000px 100%;
 }
+
+/* Headings use the bolder Sora display font site-wide; body copy stays on Inter for legibility */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sora), sans-serif;
+}
