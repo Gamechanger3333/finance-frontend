@@ -1,24 +1,42 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { apiGet } from "@/lib/api";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { apiGet, apiDelete } from "@/lib/api";
 import { getToken } from "@/hooks/use-auth";
-import { Bot, Send, Loader2, Sparkles, TrendingUp, RefreshCw } from "lucide-react";
+import { Bot, Send, Loader2, Sparkles, TrendingUp, RefreshCw, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 
-const BG = "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1400&q=80";
 interface Message { role: "user" | "assistant"; content: string; }
 const QUICK = ["What are my biggest expenses?", "How can I improve my savings rate?", "Am I on track with my goals?", "Suggest ways to cut my monthly spending"];
+const GREETING: Message = { role: "assistant", content: "Hi! I'm your FinFlow AI advisor powered by Llama 3.3. I can see your financial data and give you personalized advice. What would you like to know?" };
 
 export default function AiAssistantPage() {
+  const qc = useQueryClient();
   const { data: insights, isLoading: loadingInsights, refetch } = useQuery({ queryKey: ["ai-insights"], queryFn: () => apiGet("/api/ai/insights") });
-  const [messages, setMessages] = useState<Message[]>([{ role: "assistant", content: "Hi! I'm your FinFlow AI advisor powered by Llama 3.3. I can see your financial data and give you personalized advice. What would you like to know?" }]);
+  const { data: historyData, isLoading: loadingHistory } = useQuery({
+    queryKey: ["ai-chat-history"],
+    queryFn: () => apiGet("/api/ai/chat/history"),
+  });
+  const [messages, setMessages] = useState<Message[]>([GREETING]);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [clearing, setClearing] = useState(false);
   const [suggestions, setSuggestions] = useState(QUICK);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Load persisted history once it arrives — a saved conversation replaces
+  // the default greeting; an empty one (first-ever visit) keeps it.
+  useEffect(() => {
+    if (historyLoaded || loadingHistory) return;
+    const saved = (historyData as any)?.messages as Message[] | undefined;
+    if (saved && saved.length > 0) {
+      setMessages(saved.map((m) => ({ role: m.role, content: m.content })));
+    }
+    setHistoryLoaded(true);
+  }, [historyData, loadingHistory, historyLoaded]);
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 
@@ -46,6 +64,21 @@ export default function AiAssistantPage() {
     }
   };
 
+  const clearConversation = async () => {
+    if (clearing) return;
+    setClearing(true);
+    try {
+      await apiDelete("/api/ai/chat/history");
+      setMessages([GREETING]);
+      setSuggestions(QUICK);
+      qc.invalidateQueries({ queryKey: ["ai-chat-history"] });
+    } catch {
+      // best-effort — leave the conversation as-is if the clear failed
+    } finally {
+      setClearing(false);
+    }
+  };
+
   const insightTypes: Record<string, { color: string; emoji: string }> = {
     warning: { color: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20", emoji: "⚠️" },
     opportunity: { color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", emoji: "💡" },
@@ -56,24 +89,34 @@ export default function AiAssistantPage() {
   return (
     <ProtectedLayout>
       <div className="min-h-full flex flex-col">
-        <div className="relative h-40 overflow-hidden flex-shrink-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
-          <div className="relative z-10 px-6 pt-8">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-emerald-400" />
+        <div className="flex-shrink-0">
+          <div className="px-6 pt-8 pb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-foreground">AI Financial Advisor</h1>
+                  <p className="text-foreground/60 text-xs mt-0.5">Powered by Llama 3.3 · Groq</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">AI Financial Advisor</h1>
-                <p className="text-foreground/60 text-xs mt-0.5">Powered by Llama 3.3 · Groq</p>
-              </div>
+              {messages.length > 1 && (
+                <button
+                  onClick={clearConversation}
+                  disabled={clearing}
+                  className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-red-400 disabled:opacity-50 transition-colors"
+                  title="Clear conversation"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Clear conversation
+                </button>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="flex-1 px-6 pb-4 -mt-2 grid lg:grid-cols-[1fr_320px] gap-6">
+        <div className="flex-1 px-6 pb-4 grid lg:grid-cols-[1fr_320px] gap-6">
           <div className="flex flex-col bg-card/70 border border-border rounded-xl overflow-hidden">
             <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[500px]">
               {messages.map((msg, i) => (

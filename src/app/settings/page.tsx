@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 import { useRouter } from "next/navigation";
 
-const BG = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1400&q=80";
 
 export default function SettingsPage() {
   const { user, logout } = useAuth();
@@ -51,17 +50,14 @@ export default function SettingsPage() {
       <div className="min-h-full">
         {toast && <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm shadow-lg">{toast}</div>}
 
-        <div className="relative h-40 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
-          <div className="relative z-10 px-6 pt-8">
+        <div>
+          <div className="px-6 pt-8 pb-6">
             <h1 className="text-2xl font-bold text-foreground">Settings</h1>
             <p className="text-foreground/60 text-sm mt-1">Manage your account and preferences</p>
           </div>
         </div>
 
-        <div className="px-6 pb-8 -mt-2">
+        <div className="px-6 pb-8">
           <div className="flex gap-1 mb-6 bg-card/70 border border-border rounded-xl p-1 w-fit">
             {TABS.map((t) => (
               <button key={t.id} onClick={() => setTab(t.id as any)}

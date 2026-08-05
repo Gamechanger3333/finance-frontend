@@ -8,7 +8,6 @@ import { Users, Plus, Copy, Check, LogOut, Loader2, X, Receipt } from "lucide-re
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 
-const BG = "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80";
 
 function fmt(n: number) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
@@ -93,11 +92,8 @@ export default function HouseholdPage() {
       <div className="min-h-full">
         {toast && <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm shadow-lg">{toast}</div>}
 
-        <div className="relative h-40 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
-          <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
+        <div>
+          <div className="px-6 pt-8 pb-6 flex items-start justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground">Household</h1>
               <p className="text-foreground/60 text-sm mt-1">Split shared expenses with people you live with</p>
@@ -110,7 +106,7 @@ export default function HouseholdPage() {
           </div>
         </div>
 
-        <div className="px-6 pb-8 -mt-2 space-y-6">
+        <div className="px-6 pb-8 space-y-6">
           {!household ? (
             <div className="max-w-md bg-card/70 border border-border rounded-xl p-6">
               <div className="flex gap-1 bg-card border border-border rounded-lg p-1 mb-5 w-fit">

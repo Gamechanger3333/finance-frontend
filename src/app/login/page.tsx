@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TrendingUp, Eye, EyeOff, Loader2 } from "lucide-react";
 import ThemeToggle from "@/components/ui/theme-toggle";
+import ScrollToTop from "@/components/ui/scroll-to-top";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +20,16 @@ export default function LoginPage() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login } = useAuth();
+  const { login, user, isLoading: authLoading } = useAuth();
+
+  // Client-side safety net alongside the middleware redirect: if someone is
+  // already authenticated and lands here anyway, bounce them straight to the dashboard.
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/dashboard");
+    }
+  }, [authLoading, user, router]);
+
   const [email, setEmail] = useState("demo@finflow.com");
   const [password, setPassword] = useState("Demo@1234");
   const [showPassword, setShowPassword] = useState(false);
@@ -171,6 +181,7 @@ function LoginForm() {
           </p>
         </div>
       </div>
+      <ScrollToTop corner="bottom-left" />
     </div>
   );
 }

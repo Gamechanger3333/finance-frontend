@@ -12,8 +12,10 @@ import {
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 import Reveal from "@/components/ui/reveal";
+import { ResponsiveContainer, PieChart as RePieChart, Pie, Cell, Tooltip } from "recharts";
 
-const BG = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1400&q=80";
+const CHART_COLORS = ["#10b981", "#34d399", "#6ee7b7", "#3b82f6", "#f59e0b", "#f43f5e", "#a78bfa", "#22d3ee"];
+
 
 const FEATURES = [
   { label: "Transactions", desc: "Track every rupee in and out", icon: ArrowLeftRight, href: "/transactions" },
@@ -32,12 +34,21 @@ const FEATURES = [
   { label: "Settings", desc: "Tune your account & prefs", icon: Settings, href: "/settings" },
 ];
 
-function StatCard({ label, value, change, icon: Icon, positive, className }: any) {
+const ACCENT = {
+  emerald: { icon: "bg-emerald-500/15 text-emerald-400", glow: "bg-emerald-500/10" },
+  rose: { icon: "bg-rose-500/15 text-rose-400", glow: "bg-rose-500/10" },
+  blue: { icon: "bg-blue-500/15 text-blue-400", glow: "bg-blue-500/10" },
+  amber: { icon: "bg-amber-500/15 text-amber-400", glow: "bg-amber-500/10" },
+} as const;
+
+function StatCard({ label, value, change, icon: Icon, positive, accent = "emerald", className }: any) {
+  const a = ACCENT[accent as keyof typeof ACCENT];
   return (
-    <div className={cn("bg-card border border-border rounded-xl p-5 hover:border-emerald-500/20 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-200", className)}>
-      <div className="flex items-start justify-between mb-4">
-        <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-          <Icon className="w-5 h-5 text-emerald-400" />
+    <div className={cn("relative overflow-hidden bg-card border border-border rounded-xl p-5 hover:border-emerald-500/20 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-200", className)}>
+      <div className={cn("absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl", a.glow)} />
+      <div className="relative flex items-start justify-between mb-4">
+        <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center", a.icon)}>
+          <Icon className="w-5 h-5" />
         </div>
         {change !== undefined && (
           <span className={cn("flex items-center gap-1 text-xs font-medium", positive ? "text-emerald-400" : "text-red-400")}>
@@ -46,8 +57,8 @@ function StatCard({ label, value, change, icon: Icon, positive, className }: any
           </span>
         )}
       </div>
-      <p className="text-2xl font-bold text-foreground mb-1">{value}</p>
-      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="relative text-2xl font-bold text-foreground mb-1">{value}</p>
+      <p className="relative text-xs text-muted-foreground">{label}</p>
     </div>
   );
 }
@@ -83,11 +94,8 @@ export default function DashboardPage() {
   return (
     <ProtectedLayout>
       <div className="min-h-full">
-        <div className="relative h-48 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 to-background" />
-          <div className="relative z-10 px-6 pt-8">
+        <div>
+          <div className="px-6 pt-8 pb-6">
             <h1 className="text-2xl font-bold text-foreground">
               Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"},{" "}
               {user?.name?.split(" ")[0]} 👋
@@ -99,7 +107,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="px-6 pb-8 -mt-2">
+        <div className="px-6 pb-8">
           {!isLoading && cashflowGlance?.overdraftDate && (
             <a href="/cashflow-forecast" className="mb-6 flex items-start gap-3 bg-red-500/[0.06] border border-red-500/20 rounded-xl p-4 hover:border-red-500/30 transition-colors">
               <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
@@ -122,10 +130,10 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <StatCard label="Monthly Income" value={fmt(monthlyIncome)} icon={TrendingUp} positive={incomeChange >= 0} change={incomeChange} className="animate-fade-in-up stagger-1" />
-              <StatCard label="Monthly Expenses" value={fmt(monthlyExpenses)} icon={TrendingDown} positive={expenseChange <= 0} change={expenseChange} className="animate-fade-in-up stagger-2" />
-              <StatCard label="Net Savings" value={fmt(monthlyIncome - monthlyExpenses)} icon={DollarSign} positive={monthlyIncome - monthlyExpenses >= 0} className="animate-fade-in-up stagger-3" />
-              <StatCard label="Financial Health" value={`${user?.financialHealthScore ?? 0}/100`} icon={Target} positive={(user?.financialHealthScore ?? 0) >= 60} className="animate-fade-in-up stagger-4" />
+              <StatCard label="Monthly Income" value={fmt(monthlyIncome)} icon={TrendingUp} positive={incomeChange >= 0} change={incomeChange} accent="emerald" className="animate-fade-in-up stagger-1" />
+              <StatCard label="Monthly Expenses" value={fmt(monthlyExpenses)} icon={TrendingDown} positive={expenseChange <= 0} change={expenseChange} accent="rose" className="animate-fade-in-up stagger-2" />
+              <StatCard label="Net Savings" value={fmt(monthlyIncome - monthlyExpenses)} icon={DollarSign} positive={monthlyIncome - monthlyExpenses >= 0} accent="blue" className="animate-fade-in-up stagger-3" />
+              <StatCard label="Financial Health" value={`${user?.financialHealthScore ?? 0}/100`} icon={Target} positive={(user?.financialHealthScore ?? 0) >= 60} accent="amber" className="animate-fade-in-up stagger-4" />
             </div>
           )}
 
@@ -164,9 +172,63 @@ export default function DashboardPage() {
                     </div>
                   ))}
                 {!isLoading && (recentTx as any[]).length === 0 && (
-                  <div className="px-5 py-8 text-center text-muted-foreground/80 text-sm">No transactions yet. Add your first one!</div>
+                  <div className="px-5 py-10 flex flex-col items-center text-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                      <ArrowLeftRight className="w-5 h-5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">No transactions yet</p>
+                      <p className="text-xs text-muted-foreground/80 mt-0.5">Add your first one to see it show up here.</p>
+                    </div>
+                    <Link href="/transactions" className="text-xs font-medium bg-emerald-500 hover:bg-emerald-400 text-white px-3.5 py-1.5 rounded-lg transition-colors">
+                      Add transaction
+                    </Link>
+                  </div>
                 )}
               </div>
+
+              {/* Spending by category — real chart, driven by budgetSummary */}
+              {!isLoading && budgetSummary.length > 0 && (
+                <div className="mt-6 bg-card/70 border border-border rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <PieChart className="w-4 h-4 text-emerald-400" />
+                    <h3 className="font-semibold text-foreground text-sm">Spending by Category</h3>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-4 items-center">
+                    <div className="h-48">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RePieChart>
+                          <Pie
+                            data={budgetSummary.map((b: any) => ({ name: b.name, value: b.spent ?? 0 }))}
+                            dataKey="value"
+                            nameKey="name"
+                            innerRadius="60%"
+                            outerRadius="90%"
+                            paddingAngle={2}
+                          >
+                            {budgetSummary.map((_: any, i: number) => (
+                              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} stroke="none" />
+                            ))}
+                          </Pie>
+                          <Tooltip
+                            formatter={(v: number) => fmt(v)}
+                            contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }}
+                          />
+                        </RePieChart>
+                      </ResponsiveContainer>
+                    </div>
+                    <div className="space-y-2">
+                      {budgetSummary.slice(0, 6).map((b: any, i: number) => (
+                        <div key={b.id ?? b.name} className="flex items-center gap-2 text-xs">
+                          <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: CHART_COLORS[i % CHART_COLORS.length] }} />
+                          <span className="text-foreground/70 truncate flex-1">{b.name}</span>
+                          <span className="text-muted-foreground/80 flex-shrink-0">{fmt(b.spent ?? 0)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
@@ -197,7 +259,13 @@ export default function DashboardPage() {
                     </div>
                   );
                 })}
-                {!isLoading && budgetSummary.length === 0 && <p className="text-xs text-muted-foreground/80 text-center py-2">No budgets yet.</p>}
+                {!isLoading && budgetSummary.length === 0 && (
+                  <div className="flex flex-col items-center text-center gap-2 py-3">
+                    <PieChart className="w-6 h-6 text-muted-foreground/40" />
+                    <p className="text-xs text-muted-foreground/80">No budgets yet.</p>
+                    <Link href="/budgets" className="text-xs font-medium text-emerald-400 hover:text-emerald-300">Create one →</Link>
+                  </div>
+                )}
               </div>
 
               <div className="bg-card/70 border border-border rounded-xl p-5">
@@ -222,7 +290,13 @@ export default function DashboardPage() {
                     </div>
                   );
                 })}
-                {!isLoading && goalsSummary.length === 0 && <p className="text-xs text-muted-foreground/80 text-center py-2">No goals yet.</p>}
+                {!isLoading && goalsSummary.length === 0 && (
+                  <div className="flex flex-col items-center text-center gap-2 py-3">
+                    <Target className="w-6 h-6 text-muted-foreground/40" />
+                    <p className="text-xs text-muted-foreground/80">No goals yet.</p>
+                    <Link href="/goals" className="text-xs font-medium text-emerald-400 hover:text-emerald-300">Set a goal →</Link>
+                  </div>
+                )}
               </div>
 
               <div className="bg-card/70 border border-border rounded-xl p-5">
@@ -236,7 +310,11 @@ export default function DashboardPage() {
                 {isLoading ? (
                   <div className="space-y-3">{[...Array(2)].map((_, i) => <div key={i} className="h-10 bg-card/70 rounded animate-pulse" />)}</div>
                 ) : upcomingBills.length === 0 ? (
-                  <p className="text-xs text-muted-foreground/80 text-center py-2">No bills tracked yet.</p>
+                  <div className="flex flex-col items-center text-center gap-2 py-3">
+                    <Repeat className="w-6 h-6 text-muted-foreground/40" />
+                    <p className="text-xs text-muted-foreground/80">No bills tracked yet.</p>
+                    <Link href="/recurring-bills" className="text-xs font-medium text-emerald-400 hover:text-emerald-300">Add a bill →</Link>
+                  </div>
                 ) : (
                   upcomingBills.map((b: any) => (
                     <div key={b.id} className="flex items-center justify-between py-2 border-b border-border/60 last:border-0">

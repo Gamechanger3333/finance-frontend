@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -17,6 +17,8 @@ import {
   X,
   TrendingUp,
   ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
   Repeat,
   Activity,
   CreditCard,
@@ -61,8 +63,21 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
   const qc = useQueryClient();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("finflow_sidebar_collapsed");
+    if (saved === "true") setSidebarCollapsed(true);
+  }, []);
+
+  const toggleSidebarCollapsed = () => {
+    setSidebarCollapsed((prev) => {
+      localStorage.setItem("finflow_sidebar_collapsed", String(!prev));
+      return !prev;
+    });
+  };
 
   const { data: notifications } = useQuery({
     queryKey: ["notifications"],
@@ -117,16 +132,27 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed lg:static inset-y-0 left-0 z-30 w-64 flex flex-col bg-card border-r border-border transition-transform duration-200",
+          "fixed lg:relative inset-y-0 left-0 z-30 flex flex-col bg-card border-r border-border transition-all duration-200",
+          "w-64",
+          sidebarCollapsed ? "lg:w-20" : "lg:w-64",
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
+        {/* Collapse/expand toggle — floats on the sidebar's edge so it's always reachable regardless of width */}
+        <button
+          className="hidden lg:flex absolute -right-3 top-[3.75rem] w-6 h-6 rounded-full bg-card border border-border items-center justify-center text-foreground/50 hover:text-foreground hover:border-emerald-500/40 transition-colors z-10"
+          onClick={toggleSidebarCollapsed}
+          title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {sidebarCollapsed ? <ChevronsRight className="w-3.5 h-3.5" /> : <ChevronsLeft className="w-3.5 h-3.5" />}
+        </button>
+
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 h-16 border-b border-border">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
+        <div className={cn("flex items-center gap-3 h-16 border-b border-border", sidebarCollapsed ? "lg:px-0 lg:justify-center px-6" : "px-6")}>
+          <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0">
             <TrendingUp className="w-4 h-4 text-white" />
           </div>
-          <span className="text-lg font-bold text-foreground tracking-tight">FinFlow</span>
+          <span className={cn("text-lg font-bold text-foreground tracking-tight", sidebarCollapsed && "lg:hidden")}>FinFlow</span>
           <button className="ml-auto lg:hidden" onClick={() => setSidebarOpen(false)}>
             <X className="w-4 h-4 text-foreground/60" />
           </button>
@@ -143,10 +169,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 key={item.href}
                 href={item.href}
                 onClick={() => setSidebarOpen(false)}
+                title={sidebarCollapsed ? item.label : undefined}
               >
                 <div
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium cursor-pointer transition-all duration-150",
+                    sidebarCollapsed && "lg:justify-center lg:px-0",
                     active
                       ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20"
                       : "text-foreground/60 hover:text-foreground hover:bg-accent"
@@ -155,8 +183,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   <item.icon
                     className={cn("w-4 h-4 flex-shrink-0", active ? "text-emerald-400" : "")}
                   />
-                  <span className="flex-1">{item.label}</span>
-                  {active && <ChevronRight className="w-3 h-3 opacity-60" />}
+                  <span className={cn("flex-1", sidebarCollapsed && "lg:hidden")}>{item.label}</span>
+                  {active && <ChevronRight className={cn("w-3 h-3 opacity-60", sidebarCollapsed && "lg:hidden")} />}
                 </div>
               </Link>
             );
@@ -165,11 +193,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
         {/* User section */}
         <div className="p-3 border-t border-border">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-accent">
+          <div className={cn("flex items-center gap-3 px-3 py-2 rounded-lg bg-accent", sidebarCollapsed && "lg:justify-center lg:px-0")}>
             <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               {initials}
             </div>
-            <div className="flex-1 min-w-0">
+            <div className={cn("flex-1 min-w-0", sidebarCollapsed && "lg:hidden")}>
               <p className="text-sm font-medium text-foreground truncate">{user?.name}</p>
               <p className="text-xs text-muted-foreground truncate capitalize">
                 {user?.userType?.replace("_", " ")}
@@ -177,18 +205,28 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <button
               onClick={handleLogout}
-              className="text-muted-foreground/80 hover:text-red-400 transition-colors"
+              className={cn("text-muted-foreground/80 hover:text-red-400 transition-colors", sidebarCollapsed && "lg:hidden")}
+              title="Log out"
             >
               <LogOut className="w-4 h-4" />
             </button>
           </div>
+          {sidebarCollapsed && (
+            <button
+              onClick={handleLogout}
+              title="Log out"
+              className="hidden lg:flex w-full justify-center mt-2 text-muted-foreground/80 hover:text-red-400 transition-colors py-1.5"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </aside>
 
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 flex items-center gap-4 px-6 border-b border-border bg-background/80 backdrop-blur-sm flex-shrink-0">
+        <header className="relative z-50 h-16 flex items-center gap-4 px-6 border-b border-border bg-background/80 backdrop-blur-sm flex-shrink-0">
           <button
             className="lg:hidden text-foreground/60 hover:text-foreground"
             onClick={() => setSidebarOpen(true)}
@@ -257,6 +295,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <ScrollToTop targetRef={mainRef} />
+
+      {/* Floating AI Assistant badge — visible on every dashboard page, bottom-right, above the scroll button, with enough margin to never overlap card content */}
+      <Link
+        href="/ai-assistant"
+        title="AI Assistant"
+        className="fixed right-6 bottom-24 z-40 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20 transition-colors"
+      >
+        <Bot className="w-5 h-5" />
+      </Link>
     </div>
   );
 }

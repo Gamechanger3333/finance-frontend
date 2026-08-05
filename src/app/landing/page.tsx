@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import LandingAssistant from "@/components/landing/LandingAssistant";
 import HeroCarousel from "@/components/landing/HeroCarousel";
+import NavAuthButtons from "@/components/landing/NavAuthButtons";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import ScrollToTop from "@/components/ui/scroll-to-top";
 import Reveal from "@/components/ui/reveal";
@@ -56,8 +57,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Link href="/login" className="text-sm text-foreground/70 hover:text-foreground px-3 py-1.5 rounded-lg transition-colors">Sign in</Link>
-            <Link href="/register" className="text-sm bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-1.5 rounded-lg font-medium transition-colors">Get started</Link>
+            <NavAuthButtons />
           </div>
         </div>
       </nav>

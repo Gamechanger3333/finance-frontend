@@ -1,13 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TrendingUp, Eye, EyeOff, Loader2 } from "lucide-react";
 import ThemeToggle from "@/components/ui/theme-toggle";
+import ScrollToTop from "@/components/ui/scroll-to-top";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { user, isLoading: authLoading } = useAuth();
+
+  // Client-side safety net alongside the middleware redirect: if someone is
+  // already authenticated and lands here anyway, bounce them straight to the dashboard.
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/dashboard");
+    }
+  }, [authLoading, user, router]);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -170,6 +182,7 @@ export default function RegisterPage() {
           </p>
         </div>
       </div>
+      <ScrollToTop corner="bottom-left" />
     </div>
   );
 }

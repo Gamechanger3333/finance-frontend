@@ -7,7 +7,6 @@ import { Plus, X, Loader2, Target, Trash2, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 
-const BG = "https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=1400&q=80";
 const GOAL_TYPES = ["savings", "debt_payoff", "investment", "emergency_fund", "vacation", "purchase", "education", "other"];
 const GOAL_EMOJIS: Record<string, string> = { savings: "💰", debt_payoff: "💳", investment: "📈", emergency_fund: "🛡️", vacation: "✈️", purchase: "🛒", education: "🎓", other: "🎯" };
 
@@ -56,11 +55,8 @@ export default function GoalsPage() {
       <div className="min-h-full">
         {toast && <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm shadow-lg">{toast}</div>}
 
-        <div className="relative h-40 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
-          <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
+        <div>
+          <div className="px-6 pt-8 pb-6 flex items-start justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground">Financial Goals</h1>
               <p className="text-foreground/60 text-sm mt-1">Track your savings targets and milestones</p>
@@ -71,7 +67,7 @@ export default function GoalsPage() {
           </div>
         </div>
 
-        <div className="px-6 pb-8 -mt-2">
+        <div className="px-6 pb-8">
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="bg-card border border-border rounded-xl p-4">
               <p className="text-xs text-muted-foreground mb-1">Total Target</p>

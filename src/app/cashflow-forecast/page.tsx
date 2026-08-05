@@ -13,7 +13,6 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer,
 } from "recharts";
 
-const BG = "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80";
 const RANGE_OPTIONS = [
   { label: "30 days", value: 30 },
   { label: "60 days", value: 60 },
@@ -86,11 +85,8 @@ export default function CashflowForecastPage() {
       <div className="min-h-full">
         {toast && <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm shadow-lg">{toast}</div>}
 
-        <div className="relative h-40 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
-          <div className="relative z-10 px-6 pt-8 flex items-start justify-between">
+        <div>
+          <div className="px-6 pt-8 pb-6 flex items-start justify-between">
             <div>
               <h1 className="text-2xl font-bold text-foreground">Cash-Flow Forecast</h1>
               <p className="text-foreground/60 text-sm mt-1">A look-ahead at your balance based on bills and spending habits</p>
@@ -107,7 +103,7 @@ export default function CashflowForecastPage() {
           </div>
         </div>
 
-        <div className="px-6 pb-8 -mt-2 space-y-6">
+        <div className="px-6 pb-8 space-y-6">
           {hasOverdraft && (
             <div className="bg-red-500/[0.06] border border-red-500/20 rounded-xl p-4 flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />

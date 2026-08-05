@@ -6,7 +6,6 @@ import { BarChart3, TrendingUp, TrendingDown, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 
-const BG = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1400&q=80";
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const COLORS = ["#10b981", "#3b82f6", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#06b6d4", "#84cc16"];
 
@@ -43,17 +42,14 @@ export default function AnalyticsPage() {
   return (
     <ProtectedLayout>
       <div className="min-h-full">
-        <div className="relative h-40 overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={BG} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 to-background" />
-          <div className="relative z-10 px-6 pt-8">
+        <div>
+          <div className="px-6 pt-8 pb-6">
             <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
             <p className="text-foreground/60 text-sm mt-1">Deep insights into your financial patterns</p>
           </div>
         </div>
 
-        <div className="px-6 pb-8 -mt-2 space-y-6">
+        <div className="px-6 pb-8 space-y-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { label: "This Month Income", value: fmt(thisMonth.income), sub: `${incomeChange >= 0 ? "+" : ""}${incomeChange.toFixed(1)}% vs last month`, up: incomeChange >= 0 },
