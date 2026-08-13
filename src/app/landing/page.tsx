@@ -50,10 +50,10 @@ export default function LandingPage() {
             </div>
             <span className="text-base font-bold tracking-tight">FinFlow</span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-foreground/60">
-            <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-            <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
-            <a href="#testimonials" className="hover:text-foreground transition-colors">Reviews</a>
+          <div className="hidden md:flex items-center gap-8 text-sm text-black dark:text-white">
+            <a href="#features" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Features</a>
+            <a href="#pricing" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Pricing</a>
+            <a href="#testimonials" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Reviews</a>
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />

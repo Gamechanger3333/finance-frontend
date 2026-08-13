@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { TrendingUp, Zap, ArrowRight } from "lucide-react";
+import { TrendingUp, Zap, ArrowRight, X } from "lucide-react";
 
 const SLIDES = [
   {
@@ -61,6 +61,7 @@ const INTERVAL_MS = 5000;
 
 export default function HeroCarousel() {
   const [index, setIndex] = useState(0);
+  const [badgeDismissed, setBadgeDismissed] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -80,30 +81,39 @@ export default function HeroCarousel() {
           key={s.image}
           src={s.image}
           alt={s.alt}
-          className={`absolute inset-0 w-full h-full object-cover ${s.focal} saturate-125 contrast-105 transition-opacity duration-[1500ms] ease-in-out ${
+          className={`absolute inset-0 w-full h-full object-cover ${s.focal} saturate-125 contrast-105 transition-opacity duration-[2200ms] ease-in-out ${
             i === index ? "opacity-100" : "opacity-0"
           }`}
         />
       ))}
 
-      {/* Very light scrim, just for overall grounding — the glass panel below does the real legibility work */}
-      <div className="absolute inset-0 bg-black/20" />
+      {/* Gradient scrim for legibility — no solid panel behind the text, just enough darkening on the image itself */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/10 to-transparent" />
 
       <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col justify-end pb-20 sm:pb-16">
-        {/* key={index} remounts this block so animate-fade-in-up replays on every slide change */}
-        {/* Solid glass panel behind the text — legibility never depends on what the photo behind it looks like.
-            The stat row lives inside this panel instead of floating separately, so it can never clip
-            behind the nav or need per-breakpoint visibility hacks. */}
-        <div key={index} className="animate-fade-in-up max-w-2xl bg-black/60 backdrop-blur-md rounded-2xl p-5 sm:p-8 border border-white/10">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 rounded-full px-3.5 py-1.5 text-emerald-400 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-            <Zap className="w-3.5 h-3.5" />
-            {slide.badge}
-          </div>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-4 sm:mb-6 text-white">
-            {slide.headline}{" "}
-            <span className="text-emerald-400">{slide.accent}</span>
+        {/* key={index} remounts this block so animate-fade-in-up replays on every slide change.
+            No panel background — legibility comes from the gradient scrim on the image plus text-shadow. */}
+        <div key={index} className="animate-fade-in-up max-w-2xl" style={{ animationDuration: "900ms" }}>
+          {!badgeDismissed && (
+            <div className="relative inline-flex items-center gap-2 pl-0 pr-8 py-1.5 text-emerald-400 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <Zap className="w-3.5 h-3.5" />
+              {slide.badge}
+              <button
+                type="button"
+                onClick={() => setBadgeDismissed(true)}
+                aria-label="Dismiss"
+                className="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center text-emerald-400/80 hover:text-white transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          )}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight mb-4 sm:mb-6 text-white [text-shadow:0_2px_20px_rgb(0_0_0_/_70%)]">
+            <span key={`h-${index}`} className="inline-block animate-hero-line-fade">{slide.headline}</span>{" "}
+            <span key={`a-${index}`} className="inline-block text-emerald-400 animate-hero-line-up" style={{ animationDelay: "550ms" }}>{slide.accent}</span>
           </h1>
-          <p className="text-base sm:text-lg text-white/85 leading-relaxed mb-5 sm:mb-6 max-w-lg">
+          <p className="text-base sm:text-lg text-white/90 leading-relaxed mb-5 sm:mb-6 max-w-lg [text-shadow:0_1px_10px_rgb(0_0_0_/_70%)]">
             {slide.subtext}
           </p>
 
@@ -129,7 +139,7 @@ export default function HeroCarousel() {
               Try demo account
             </Link>
           </div>
-          <p className="mt-4 text-xs sm:text-sm text-white/60">No credit card required · Free plan available</p>
+          <p className="mt-4 text-xs sm:text-sm text-white/70 [text-shadow:0_1px_6px_rgb(0_0_0_/_70%)]">No credit card required · Free plan available</p>
         </div>
 
         {/* Slide dots */}

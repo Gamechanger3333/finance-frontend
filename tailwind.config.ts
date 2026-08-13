@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-sora)", "sans-serif"],
+        display: ["var(--font-kumbh)", "sans-serif"],
       },
       colors: {
         background: "hsl(var(--background))",
@@ -103,6 +103,8 @@ module.exports = {
         "fade-in": "fade-in 0.5s ease-out both",
         "fade-in-up": "fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
         "fade-in-down": "fade-in-down 0.4s ease-out both",
+        "hero-line-fade": "fade-in 1.1s ease-out both",
+        "hero-line-up": "fade-in-up 1.3s cubic-bezier(0.16, 1, 0.3, 1) both",
         "scale-in": "scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both",
         "slide-in-right": "slide-in-right 0.4s cubic-bezier(0.16, 1, 0.3, 1) both",
         shimmer: "shimmer 2s infinite linear",
