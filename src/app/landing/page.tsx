@@ -5,8 +5,7 @@ import {
 } from "lucide-react";
 import LandingAssistant from "@/components/landing/LandingAssistant";
 import HeroCarousel from "@/components/landing/HeroCarousel";
-import NavAuthButtons from "@/components/landing/NavAuthButtons";
-import ThemeToggle from "@/components/ui/theme-toggle";
+import Navigation from "@/components/landing/Navigation";
 import ScrollToTop from "@/components/ui/scroll-to-top";
 import Reveal from "@/components/ui/reveal";
 
@@ -42,25 +41,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Navbar */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-emerald-500 flex items-center justify-center">
-              <TrendingUp className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="text-base font-bold tracking-tight">FinFlow</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-black dark:text-white">
-            <a href="#features" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Features</a>
-            <a href="#pricing" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Pricing</a>
-            <a href="#testimonials" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Reviews</a>
-          </div>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <NavAuthButtons />
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero — auto-rotating, feature-themed background carousel */}
       <HeroCarousel />
