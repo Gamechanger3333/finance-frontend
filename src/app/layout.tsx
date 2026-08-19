@@ -5,9 +5,48 @@ import { Providers } from "@/components/Providers";
 
 const kumbhSans = Kumbh_Sans({ subsets: ["latin"], variable: "--font-kumbh" });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://finance-frontend-kappa-liard.vercel.app";
+
 export const metadata: Metadata = {
-  title: "FinFlow – AI-Powered Finance Management",
-  description: "Take control of your financial future with smart budgeting, real-time analytics, and AI-powered advice.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "FinFlow – AI-Powered Personal Finance & Budgeting App",
+    template: "%s | FinFlow",
+  },
+  description:
+    "Take control of your financial future with FinFlow: smart budgeting, real-time analytics, debt payoff planning, and an AI financial advisor grounded in your own data.",
+  keywords: [
+    "personal finance app",
+    "budgeting app",
+    "AI financial advisor",
+    "expense tracker",
+    "debt payoff planner",
+    "cash flow forecast",
+    "money management software",
+  ],
+  authors: [{ name: "FinFlow" }],
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  alternates: { canonical: "/" },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "FinFlow",
+    title: "FinFlow – AI-Powered Personal Finance & Budgeting App",
+    description:
+      "Smart budgeting, real-time analytics, debt payoff planning, and an AI financial advisor grounded in your own data.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "FinFlow — AI-powered personal finance" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FinFlow – AI-Powered Personal Finance & Budgeting App",
+    description:
+      "Smart budgeting, real-time analytics, debt payoff planning, and an AI financial advisor grounded in your own data.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({

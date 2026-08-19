@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   TrendingUp, BarChart3, Shield, Bot, Target, Zap,
@@ -8,6 +10,13 @@ import HeroCarousel from "@/components/landing/HeroCarousel";
 import Navigation from "@/components/landing/Navigation";
 import ScrollToTop from "@/components/ui/scroll-to-top";
 import Reveal from "@/components/ui/reveal";
+
+export const metadata: Metadata = {
+  title: "AI-Powered Personal Finance & Budgeting App",
+  description:
+    "Take control of your financial future with FinFlow: smart budgeting, real-time analytics, debt payoff planning, and an AI financial advisor grounded in your own data. Free to start.",
+  alternates: { canonical: "/landing" },
+};
 
 const STATS = [
   { label: "Active Users", value: "50K+" },
@@ -38,8 +47,34 @@ const TESTIMONIALS = [
 ];
 
 export default function LandingPage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "FinFlow",
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web",
+    description:
+      "AI-powered personal finance app with smart budgeting, real-time analytics, debt payoff planning, and an AI financial advisor grounded in your own transaction data.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      description: "Free plan — 50 transactions/month, 3 budget categories",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      {/* Structured data for search engines — no fabricated ratings/review
+          counts here on purpose: the STATS/TESTIMONIALS above are
+          placeholder marketing copy, and shipping fake AggregateRating/
+          Review schema is a real risk of a Google structured-data spam
+          penalty. Replace with real numbers before adding review schema. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       {/* Navbar */}
       <Navigation />
 
@@ -67,11 +102,12 @@ export default function LandingPage() {
           </div>
           <Reveal>
             <div className="relative rounded-2xl overflow-hidden border border-border mb-10 sm:mb-12 h-48 sm:h-64 lg:h-80">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=2200&q=85&auto=format&fit=crop"
                 alt="Team planning a financial workflow together"
-                className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
+                fill
+                sizes="100vw"
+                className="object-cover saturate-125 contrast-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
@@ -105,11 +141,12 @@ export default function LandingPage() {
           </div>
           <Reveal>
             <div className="relative rounded-2xl overflow-hidden border border-border mb-10 sm:mb-12 h-44 sm:h-56 lg:h-64 max-w-5xl mx-auto">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=2200&q=85&auto=format&fit=crop"
                 alt="Colleagues comparing plans on a laptop"
-                className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
+                fill
+                sizes="100vw"
+                className="object-cover saturate-125 contrast-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
@@ -152,12 +189,13 @@ export default function LandingPage() {
 
       {/* Testimonials */}
       <section id="testimonials" className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://images.unsplash.com/photo-1568992688065-536aad8a12f6?w=2400&q=85&auto=format&fit=crop"
-          alt="People discussing their experience with FinFlow"
-          className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
-        />
+        <Image
+                src="https://images.unsplash.com/photo-1568992688065-536aad8a12f6?w=2400&q=85&auto=format&fit=crop"
+                alt="People discussing their experience with FinFlow"
+                fill
+                sizes="100vw"
+                className="object-cover saturate-125 contrast-105"
+              />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/45 to-black/80" />
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -187,12 +225,13 @@ export default function LandingPage() {
 
       {/* CTA */}
       <section className="relative py-16 sm:py-28 px-4 sm:px-6 overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=2400&q=85&auto=format&fit=crop"
-          alt="A team presenting their financial progress"
-          className="absolute inset-0 w-full h-full object-cover saturate-125 contrast-105"
-        />
+        <Image
+                src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=2400&q=85&auto=format&fit=crop"
+                alt="A team presenting their financial progress"
+                fill
+                sizes="100vw"
+                className="object-cover saturate-125 contrast-105"
+              />
         <div className="absolute inset-0 bg-black/60" />
         <Reveal className="relative z-10 max-w-3xl mx-auto text-center" as="div">
           <h2 className="text-4xl font-bold mb-4 text-white [text-shadow:0_2px_16px_rgb(0_0_0_/_60%)]">Start your financial journey today</h2>

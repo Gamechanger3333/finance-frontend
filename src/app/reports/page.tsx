@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet, apiDownload } from "@/lib/api";
-import { FileText, Download, FileSpreadsheet, TrendingUp, TrendingDown, DollarSign, Loader2 } from "lucide-react";
+import { FileText, Download, FileSpreadsheet, TrendingUp, TrendingDown, DollarSign, Loader2, Sparkles, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
 
@@ -71,6 +71,13 @@ export default function ReportsPage() {
   const s = summary as any;
   const incomeCats = (s?.byCategory ?? []).filter((c: any) => c.type === "income");
   const expenseCats = (s?.byCategory ?? []).filter((c: any) => c.type === "expense");
+
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  const { data: monthlyReport, isLoading: loadingReport, refetch: refetchReport, isFetching: fetchingReport } = useQuery({
+    queryKey: ["ai-monthly-report", currentMonth],
+    queryFn: () => apiGet(`/api/ai/monthly-report?month=${currentMonth}`),
+  });
 
   return (
     <ProtectedLayout>
@@ -173,6 +180,25 @@ export default function ReportsPage() {
                     </div>
                   ))}
                 </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-card/70 border border-border rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b border-border flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <h2 className="font-semibold text-foreground text-sm">AI Monthly Report — {currentMonth}</h2>
+              </div>
+              <button onClick={() => refetchReport()} className="text-muted-foreground/80 hover:text-foreground/60 transition-colors">
+                <RefreshCw className={cn("w-3.5 h-3.5", (loadingReport || fetchingReport) && "animate-spin")} />
+              </button>
+            </div>
+            <div className="p-5">
+              {loadingReport ? (
+                <div className="space-y-2">{[...Array(3)].map((_, i) => <div key={i} className="h-4 bg-card/70 rounded animate-pulse" />)}</div>
+              ) : (
+                <p className="text-sm text-foreground/70 leading-relaxed whitespace-pre-line">{(monthlyReport as any)?.report}</p>
               )}
             </div>
           </div>
