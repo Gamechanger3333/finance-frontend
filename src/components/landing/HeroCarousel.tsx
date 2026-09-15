@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { TrendingUp, Zap, ArrowRight, X } from "lucide-react";
 
@@ -74,14 +75,18 @@ export default function HeroCarousel() {
 
   return (
     <section className="relative h-[100svh] min-h-[600px] sm:h-[92vh] sm:min-h-[640px] w-full overflow-hidden">
-      {/* Crossfading background images — HD, sharp source photos, no soft-focus/bokeh shots */}
+      {/* Crossfading background images — HD, sharp source photos, no soft-focus/bokeh shots.
+          Only the first (LCP candidate, visible on initial paint) is priority-loaded;
+          the rest lazy-load since they're not visible until the user waits ~5s+ per slide. */}
       {SLIDES.map((s, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           key={s.image}
           src={s.image}
           alt={s.alt}
-          className={`absolute inset-0 w-full h-full object-cover ${s.focal} saturate-125 contrast-105 transition-opacity duration-[2200ms] ease-in-out ${
+          fill
+          sizes="100vw"
+          priority={i === 0}
+          className={`object-cover ${s.focal} saturate-125 contrast-105 transition-opacity duration-[2200ms] ease-in-out ${
             i === index ? "opacity-100" : "opacity-0"
           }`}
         />

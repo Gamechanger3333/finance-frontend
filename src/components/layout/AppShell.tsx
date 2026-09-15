@@ -143,6 +143,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           className="hidden lg:flex absolute -right-3 top-[3.75rem] w-6 h-6 rounded-full bg-card border border-border items-center justify-center text-foreground/50 hover:text-foreground hover:border-emerald-500/40 transition-colors z-10"
           onClick={toggleSidebarCollapsed}
           title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {sidebarCollapsed ? <ChevronsRight className="w-3.5 h-3.5" /> : <ChevronsLeft className="w-3.5 h-3.5" />}
         </button>
@@ -153,7 +154,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <TrendingUp className="w-4 h-4 text-white" />
           </div>
           <span className={cn("text-lg font-bold text-foreground tracking-tight", sidebarCollapsed && "lg:hidden")}>FinFlow</span>
-          <button className="ml-auto lg:hidden" onClick={() => setSidebarOpen(false)}>
+          <button className="ml-auto lg:hidden" onClick={() => setSidebarOpen(false)} aria-label="Close menu">
             <X className="w-4 h-4 text-foreground/60" />
           </button>
         </div>
@@ -207,6 +208,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               onClick={handleLogout}
               className={cn("text-muted-foreground/80 hover:text-red-400 transition-colors", sidebarCollapsed && "lg:hidden")}
               title="Log out"
+              aria-label="Log out"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -215,6 +217,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <button
               onClick={handleLogout}
               title="Log out"
+              aria-label="Log out"
               className="hidden lg:flex w-full justify-center mt-2 text-muted-foreground/80 hover:text-red-400 transition-colors py-1.5"
             >
               <LogOut className="w-4 h-4" />
@@ -230,13 +233,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <button
             className="lg:hidden text-foreground/60 hover:text-foreground"
             onClick={() => setSidebarOpen(true)}
+            aria-label="Open menu"
           >
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1" />
           <ThemeToggle className="mr-1" />
           <div className="relative">
-            <button onClick={() => setNotifOpen((o) => !o)} className="relative cursor-pointer">
+            <button onClick={() => setNotifOpen((o) => !o)} className="relative cursor-pointer" aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ""}`} aria-expanded={notifOpen}>
               <Bell className="w-5 h-5 text-foreground/60 hover:text-foreground transition-colors" />
               {unread > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full text-[10px] font-bold flex items-center justify-center text-white">
@@ -252,7 +256,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   <div className="flex items-center justify-between px-4 py-3 border-b border-border flex-shrink-0">
                     <span className="text-sm font-semibold text-foreground">Notifications</span>
                     {unread > 0 && (
-                      <button onClick={() => markAllRead.mutate()} className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300">
+                      <button onClick={() => markAllRead.mutate()} className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300" aria-label="Mark all notifications as read">
                         <CheckCheck className="w-3.5 h-3.5" /> Mark all read
                       </button>
                     )}
@@ -263,6 +267,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     ) : (
                       notifList.slice(0, 15).map((n: any) => (
                         <button key={n.id} onClick={() => !n.isRead && markRead.mutate(n.id)}
+                          aria-label={`${n.title}${!n.isRead ? " (unread — click to mark as read)" : ""}`}
                           className={cn("w-full text-left flex items-start gap-2.5 px-4 py-3 border-b border-border/50 last:border-0 hover:bg-accent/60 transition-colors",
                             !n.isRead && "bg-emerald-500/[0.03]")}>
                           <div className="flex-shrink-0 mt-0.5">{notifIcon(n.type)}</div>

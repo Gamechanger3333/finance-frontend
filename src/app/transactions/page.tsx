@@ -139,7 +139,7 @@ export default function TransactionsPage() {
                   <span className={cn("text-sm font-semibold", t.type === "income" ? "text-emerald-400" : "text-foreground/80")}>
                     {t.type === "income" ? "+" : "-"}{fmt(t.amount)}
                   </span>
-                  <button onClick={() => deleteTx.mutate(t.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 ml-1">
+                  <button onClick={() => deleteTx.mutate(t.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 ml-1" aria-label={`Delete transaction: ${t.description}`}>
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -153,7 +153,7 @@ export default function TransactionsPage() {
             <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-foreground text-lg">Add Transaction</h2>
-                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Close add transaction form"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div className="flex gap-2">

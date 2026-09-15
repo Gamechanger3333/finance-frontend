@@ -226,7 +226,7 @@ export default function HouseholdPage() {
             <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-foreground text-lg">Add Shared Expense</h2>
-                <button onClick={() => setShowExpenseForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowExpenseForm(false)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Close add shared expense form"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submitExpense} className="space-y-4">
                 <div>

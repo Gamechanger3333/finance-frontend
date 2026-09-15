@@ -190,7 +190,7 @@ export default function ReportsPage() {
                 <Sparkles className="w-4 h-4 text-emerald-400" />
                 <h2 className="font-semibold text-foreground text-sm">AI Monthly Report — {currentMonth}</h2>
               </div>
-              <button onClick={() => refetchReport()} className="text-muted-foreground/80 hover:text-foreground/60 transition-colors">
+              <button onClick={() => refetchReport()} className="text-muted-foreground/80 hover:text-foreground/60 transition-colors" aria-label="Refresh AI monthly report">
                 <RefreshCw className={cn("w-3.5 h-3.5", (loadingReport || fetchingReport) && "animate-spin")} />
               </button>
             </div>

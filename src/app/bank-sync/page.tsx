@@ -92,7 +92,7 @@ export default function BankSyncPage() {
                         <span className="text-xs text-muted-foreground/80">{c.accountName} ···· {c.accountMask}</span>
                       </div>
                     </div>
-                    <button onClick={() => disconnect.mutate(c.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors">
+                    <button onClick={() => disconnect.mutate(c.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors" aria-label={`Disconnect ${c.institutionName ?? "bank account"}`}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -117,7 +117,7 @@ export default function BankSyncPage() {
             <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-sm shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-foreground text-lg">Choose Your Bank</h2>
-                <button onClick={() => setShowPicker(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowPicker(false)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Close bank picker"><X className="w-5 h-5" /></button>
               </div>
               <div className="space-y-2">
                 {(institutions as string[]).map((name) => (

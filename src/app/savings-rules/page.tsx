@@ -147,7 +147,7 @@ export default function SavingsRulesPage() {
                         <button onClick={() => updateRule.mutate({ id: r.id, data: { isActive: !r.isActive } })} className="text-muted-foreground/80 hover:text-emerald-400 transition-colors" title={r.isActive ? "Pause" : "Resume"}>
                           {r.isActive ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                         </button>
-                        <button onClick={() => deleteRule.mutate(r.id)} className="text-muted-foreground/80 hover:text-red-400 transition-colors">
+                        <button onClick={() => deleteRule.mutate(r.id)} className="text-muted-foreground/80 hover:text-red-400 transition-colors" aria-label="Delete auto-save rule">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -194,7 +194,7 @@ export default function SavingsRulesPage() {
             <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-foreground text-lg">New Savings Rule</h2>
-                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Close new savings rule form"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div>

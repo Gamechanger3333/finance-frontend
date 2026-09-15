@@ -26,7 +26,6 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "FinFlow" }],
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
-  alternates: { canonical: "/" },
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",

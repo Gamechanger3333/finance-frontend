@@ -86,7 +86,7 @@ export default function BudgetsPage() {
                         <h3 className="font-semibold text-foreground">{b.name}</h3>
                         <span className="text-xs text-muted-foreground/80 capitalize">{b.period}</span>
                       </div>
-                      <button onClick={() => deleteBudget.mutate(b.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+                      <button onClick={() => deleteBudget.mutate(b.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100" aria-label={`Delete budget: ${b.name}`}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -129,7 +129,7 @@ export default function BudgetsPage() {
             <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-foreground text-lg">Create Budget</h2>
-                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Close create budget form"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div>

@@ -178,7 +178,7 @@ export default function DebtsPage() {
                           <span className="text-xs text-muted-foreground/80">{typeLabel(d.debtType)} · {d.interestRate}% APR</span>
                         </div>
                       </div>
-                      <button onClick={() => deleteDebt.mutate(d.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
+                      <button onClick={() => deleteDebt.mutate(d.id)} className="text-muted-foreground/60 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100" aria-label={`Delete debt: ${d.name}`}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -198,7 +198,7 @@ export default function DebtsPage() {
                           className="h-9 px-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-white rounded-lg text-xs font-medium transition-colors">
                           {logPayment.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Log"}
                         </button>
-                        <button onClick={() => setPayingId(null)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-4 h-4" /></button>
+                        <button onClick={() => setPayingId(null)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Cancel logging payment"><X className="w-4 h-4" /></button>
                       </div>
                     ) : (
                       <button onClick={() => { setPayingId(d.id); setPayAmount(String(d.minimumPayment)); }}
@@ -309,7 +309,7 @@ export default function DebtsPage() {
             <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-foreground text-lg">Add Debt</h2>
-                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Close add debt form"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div>

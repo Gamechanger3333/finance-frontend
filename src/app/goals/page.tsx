@@ -111,7 +111,7 @@ export default function GoalsPage() {
                         <button onClick={() => { setAddFundsId(g.id); setAddAmount(""); }} className="text-muted-foreground/80 hover:text-emerald-400 transition-colors">
                           <PlusCircle className="w-4 h-4" />
                         </button>
-                        <button onClick={() => deleteGoal.mutate(g.id)} className="text-muted-foreground/80 hover:text-red-400 transition-colors">
+                        <button onClick={() => deleteGoal.mutate(g.id)} className="text-muted-foreground/80 hover:text-red-400 transition-colors" aria-label={`Delete goal: ${g.name}`}>
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -157,7 +157,7 @@ export default function GoalsPage() {
             <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-foreground text-lg">Create Financial Goal</h2>
-                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground"><X className="w-5 h-5" /></button>
+                <button onClick={() => setShowForm(false)} className="text-muted-foreground/80 hover:text-foreground" aria-label="Close create goal form"><X className="w-5 h-5" /></button>
               </div>
               <form onSubmit={submit} className="space-y-4">
                 <div>
